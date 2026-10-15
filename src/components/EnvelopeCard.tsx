@@ -35,10 +35,11 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
   const topFlapRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
-  const sealRef = useRef<HTMLDivElement>(null);
+  const sealRef = useRef<HTMLImageElement>(null);
 
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     if (!topFlapRef.current || !cardRef.current || !shadowRef.current) return;
@@ -47,131 +48,218 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
 
     // --- 1. ANIMATION DESKTOP (> 768px) ---
     mm.add("(min-width: 769px)", () => {
+      // Définition des états initiaux explicites
+      gsap.set(topFlapRef.current, { rotateX: 0, zIndex: 12 });
+      gsap.set(cardRef.current, { y: 0, scale: 1, zIndex: 1 });
+      if (sealRef.current) {
+        gsap.set(sealRef.current, { xPercent: -50, yPercent: -50, scale: 1, opacity: 1, rotate: 0, y: 0 });
+      }
+      if (shadowRef.current) {
+        gsap.set(shadowRef.current, { scaleX: 1, opacity: 1 });
+      }
+
       const tl = gsap.timeline({
         paused: true,
+        onStart: () => {
+          setIsAnimating(true);
+        },
         onComplete: () => {
           setIsOpen(true);
+          setIsAnimating(false);
         },
         onReverseComplete: () => {
           setIsOpen(false);
+          setIsAnimating(false);
         },
       });
 
+      // 1. Sceau de cire : soulèvement délicat et dissolution vaporeuse
       if (sealRef.current) {
         tl.to(
           sealRef.current,
           {
             duration: 0.35,
-            scale: 0,
-            opacity: 0,
-            ease: "power2.in",
+            scale: 1.14,
+            y: -5,
+            rotate: -6,
+            ease: "power2.out",
           },
           0
+        ).to(
+          sealRef.current,
+          {
+            duration: 0.35,
+            scale: 0.75,
+            opacity: 0,
+            ease: "power2.inOut",
+          },
+          0.18
         );
       }
 
-      tl.to(topFlapRef.current, {
-        duration: 0.8,
-        ease: "back",
-        transformOrigin: "top",
-        rotateX: 180,
-        borderTop: "1px solid rgba(190, 180, 160, 0.6)",
-        zIndex: 1,
-      })
-        .set(cardRef.current, {
-          zIndex: 2,
+      // 2. Rabat supérieur : déploiement réaliste en 3D
+      // Étape A : ouverture de 0° à 90° (le rabat reste au premier plan avec sa drop-shadow qui s'atténue)
+      tl.to(
+        topFlapRef.current,
+        {
+          duration: 0.45,
+          rotateX: 90,
+          transformOrigin: "50% 0%",
+          ease: "power2.in",
+        },
+        0.18
+      )
+        .to(
+          topFlapRef.current,
+          {
+            duration: 0.45,
+            filter: "drop-shadow(0 2px 4px rgba(45, 32, 20, 0.05))",
+            ease: "power2.in",
+          },
+          0.18
+        )
+        // À 90° pile : bascule au z-index 1 pour passer derrière l'enveloppe
+        .set(topFlapRef.current, {
+          zIndex: 1,
         })
-        .to(cardRef.current, {
-          duration: 0.3,
-          left: 30,
-          top: 30,
-          width: 250,
-          height: 150,
+        // Étape B : repli doux de 90° à 180° derrière l'enveloppe
+        .to(topFlapRef.current, {
+          duration: 0.45,
+          rotateX: 180,
+          transformOrigin: "50% 0%",
+          ease: "power2.out",
         })
-        .to(cardRef.current, {
-          duration: 0.5,
-          top: -220,
-        })
-        .set(cardRef.current, {
-          zIndex: 10,
-        })
-        .to(cardRef.current, {
-          duration: 0.7,
-          scaleX: 1.4,
-          scaleY: 1.6,
-          top: 10,
-          ease: "back",
-        })
+
+        // 3. Ombre portée au sol : s'étend légèrement pour créer un sentiment de profondeur
         .to(
           shadowRef.current,
           {
-            duration: 0.7,
-            scaleX: 2.1,
+            duration: 0.8,
+            scaleX: 1.5,
+            opacity: 0.45,
+            ease: "power2.out",
           },
-          1.6
-        );
+          0.5
+        )
+
+        // 4. Glissement élégant de la carte hors de la pochette
+        // La carte monte avec fluidité le long de l'axe Y
+        .to(
+          cardRef.current,
+          {
+            duration: 0.68,
+            y: -155,
+            ease: "power2.inOut",
+          },
+          0.65
+        )
+        // Au sommet, la carte passe devant tous les pans de l'enveloppe
+        .set(cardRef.current, {
+          zIndex: 15,
+        })
+        // 5. Descente et mise en valeur majestueuse au premier plan avec un bel amorti
+        .to(cardRef.current, {
+          duration: 0.78,
+          y: -12,
+          scale: 1.25,
+          boxShadow:
+            "0 24px 50px rgba(50, 40, 30, 0.22), 0 6px 16px rgba(50, 40, 30, 0.12)",
+          ease: "power3.out",
+        });
 
       timelineRef.current = tl;
     });
 
     // --- 2. ANIMATION MOBILE (<= 768px : Plein Écran) ---
     mm.add("(max-width: 768px)", () => {
+      // Définition des états initiaux explicites
+      gsap.set(topFlapRef.current, { rotateX: 0, zIndex: 12 });
+      gsap.set(cardRef.current, { y: 0, scale: 1, zIndex: 1 });
+      if (sealRef.current) {
+        gsap.set(sealRef.current, { xPercent: -50, yPercent: -50, scale: 1, opacity: 1, rotate: 0, y: 0 });
+      }
+
       const tl = gsap.timeline({
         paused: true,
+        onStart: () => {
+          setIsAnimating(true);
+        },
         onComplete: () => {
           setIsOpen(true);
+          setIsAnimating(false);
         },
         onReverseComplete: () => {
           setIsOpen(false);
+          setIsAnimating(false);
         },
       });
 
-      // Disparition du sceau
+      // 1. Sceau : disparition fluide
       if (sealRef.current) {
         tl.to(
           sealRef.current,
           {
             duration: 0.35,
-            scale: 0,
-            opacity: 0,
-            ease: "power2.in",
+            scale: 1.15,
+            y: -5,
+            rotate: -6,
+            ease: "power2.out",
           },
           0
+        ).to(
+          sealRef.current,
+          {
+            duration: 0.35,
+            scale: 0.75,
+            opacity: 0,
+            ease: "power2.inOut",
+          },
+          0.18
         );
       }
 
-      // 1. Le grand rabat supérieur s'ouvre vers le haut
+      // 2. Déploiement du grand rabat supérieur
       tl.to(
         topFlapRef.current,
         {
-          duration: 0.8,
-          ease: "back",
-          transformOrigin: "top",
-          rotateX: 180,
-          borderTop: "1px solid rgba(190, 180, 160, 0.6)",
-          zIndex: 1,
+          duration: 0.45,
+          rotateX: 90,
+          transformOrigin: "50% 0%",
+          ease: "power2.in",
         },
-        0
+        0.18
       )
-        // 2. Passage de la carte au z-index 2
+        .set(topFlapRef.current, {
+          zIndex: 1,
+        })
+        .to(topFlapRef.current, {
+          duration: 0.45,
+          rotateX: 180,
+          transformOrigin: "50% 0%",
+          ease: "power2.out",
+        })
+
+        // 3. Montée fluide et rythmée de la carte hors de la pochette
+        .to(
+          cardRef.current,
+          {
+            duration: 0.72,
+            y: "-38vh",
+            ease: "power2.inOut",
+          },
+          0.65
+        )
+        // 4. Passage au premier plan
         .set(cardRef.current, {
-          zIndex: 2,
+          zIndex: 15,
         })
-        // 3. La carte glisse vers le haut pour sortir de l'enveloppe
+        // 5. Redescente douce et élégante au centre de l'écran
         .to(cardRef.current, {
-          duration: 0.6,
-          y: "-70vh",
-          ease: "power2.inOut",
-        })
-        // 4. La carte passe au premier plan devant tous les rabats
-        .set(cardRef.current, {
-          zIndex: 10,
-        })
-        // 5. La carte redescend se positionner au centre au premier plan
-        .to(cardRef.current, {
-          duration: 0.75,
+          duration: 0.8,
           y: 0,
-          ease: "back.out(1.1)",
+          scale: 1.02,
+          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.28)",
+          ease: "power3.out",
         });
 
       timelineRef.current = tl;
@@ -181,7 +269,8 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
   }, []);
 
   const handleEnvelopeClick = () => {
-    if (!isOpen && timelineRef.current) {
+    if (!isOpen && !isAnimating && timelineRef.current && !timelineRef.current.isActive()) {
+      setIsAnimating(true);
       timelineRef.current.play();
       onOpen?.();
     }
@@ -189,11 +278,27 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
 
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (timelineRef.current) {
+    if (timelineRef.current && !timelineRef.current.isActive()) {
+      setIsAnimating(true);
+      setIsOpen(false);
       timelineRef.current.reverse();
       onClose?.();
     }
   };
+
+  // Fermeture avec la touche Échap
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen && timelineRef.current && !timelineRef.current.isActive()) {
+        setIsAnimating(true);
+        setIsOpen(false);
+        timelineRef.current.reverse();
+        onClose?.();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   return (
     <div
@@ -201,7 +306,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
       className={`envelope-wrapper ${satisfyFont.className} ${className}`}
     >
       <div
-        className="envelope"
+        className={`envelope ${isOpen ? "is-open" : ""}`}
         onClick={handleEnvelopeClick}
         role="button"
         tabIndex={0}
@@ -212,7 +317,15 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           }
         }}
       >
-        <div ref={cardRef} className="envelope-card">
+        <div
+          ref={cardRef}
+          className="envelope-card"
+          onClick={(e) => {
+            if (isOpen) {
+              e.stopPropagation();
+            }
+          }}
+        >
           <button
             type="button"
             className="envelope-card-close"
@@ -245,28 +358,17 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         <div className="envelope-right" />
         <div className="envelope-bottom" />
         <div className="envelope-left" />
-        <div className="envelope-pattern" aria-hidden="true" />
         <div ref={shadowRef} className="envelope-shadow" />
 
-        {/* Sceau de cire ivoire au centre */}
-        <div ref={sealRef} className="envelope-seal" aria-hidden="true">
-          <svg
-            width="26"
-            height="26"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12 21V9" />
-            <path d="M12 16c-2.5-1-3.5-3-3.5-5 2.5 0 3.5 2 3.5 5z" fill="currentColor" fillOpacity="0.2" />
-            <path d="M12 12c2.5-1 3.5-3 3.5-5-2.5 0-3.5 2-3.5 5z" fill="currentColor" fillOpacity="0.2" />
-            <path d="M12 8c-2-1-3-2.5-3-4 2 0 3 1.5 3 4z" fill="currentColor" fillOpacity="0.2" />
-            <circle cx="12" cy="4" r="1.5" fill="currentColor" />
-          </svg>
-        </div>
+        {/* Sceau de cire au centre */}
+        <img
+          ref={sealRef}
+          src="/seal.png"
+          alt="Sceau en cire"
+          className="envelope-seal"
+          aria-hidden="true"
+          draggable={false}
+        />
       </div>
     </div>
   );
