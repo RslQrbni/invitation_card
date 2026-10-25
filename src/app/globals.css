@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F9F0E0;
+  --foreground: #3b2d22;
+  --gold-primary: #B48C3D;
+  --gold-accent: #cda95a;
+  --gold-light: #d8ba72;
+  --burgundy: #5A0F1B;
+  --font-cinzel: var(--font-cinzel), 'Cinzel', Georgia, serif;
+  --font-playfair: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-cormorant: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-inter: var(--font-inter), 'Inter', sans-serif;
+  --font-pinyon: var(--font-pinyon), 'Pinyon Script', cursive;
+  --font-amiri: var(--font-amiri), 'Amiri', serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.font-pinyon {
+  font-family: var(--font-pinyon);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-amiri {
+  font-family: var(--font-amiri);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F9F0E0 !important;
+  color: #3b2d22;
+  font-family: var(--font-cormorant);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f4ebd9;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9a764;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a67d2b;
+}
+
+/* Gold shimmer keyframe animation */
+@keyframes goldShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(105deg, #B48C3D 0%, #B48C3D 25%, #cda95a 46%, #d8ba72 52%, #cda95a 58%, #B48C3D 75%, #B48C3D 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 6s ease-in-out infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 4s ease-in-out infinite;
+}
+
+/* Smooth slow heartbeat pulse animation for corner flowers */
+@keyframes flowerHeartbeatLeft {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes flowerHeartbeatRight {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-flower-left {
+  animation: flowerHeartbeatLeft 4s ease-in-out infinite;
+  transform-origin: bottom left;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.animate-flower-right {
+  animation: flowerHeartbeatRight 4s ease-in-out infinite;
+  transform-origin: bottom right;
+  backface-visibility: hidden;
+  will-change: transform;
 }

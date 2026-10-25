@@ -12,28 +12,23 @@ const satisfyFont = Satisfy({
 });
 
 export interface EnvelopeCardProps {
-  /** Texte principal affiché sur la carte */
-  text?: string;
-  /** Contenu personnalisé optionnel */
-  children?: React.ReactNode;
-  /** Callback déclenché à l'ouverture de l'enveloppe */
+  /** Optional video source for backward compatibility */
+  videoSrc?: string;
+  /** Callback fired when envelope starts opening */
   onOpen?: () => void;
-  /** Callback déclenché à la fermeture de l'enveloppe */
-  onClose?: () => void;
-  /** Classe CSS optionnelle pour le wrapper */
+  /** Callback fired when envelope finishes opening to transition to invitation page */
+  onProceed?: () => void;
+  /** Optional class name */
   className?: string;
 }
 
 export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
-  text = "hello world...",
-  children,
   onOpen,
-  onClose,
+  onProceed,
   className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const topFlapRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const shadowRef = useRef<HTMLDivElement>(null);
   const sealRef = useRef<HTMLImageElement>(null);
 
@@ -42,17 +37,22 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (!topFlapRef.current || !cardRef.current || !shadowRef.current) return;
+    if (!topFlapRef.current || !shadowRef.current) return;
 
     const mm = gsap.matchMedia(containerRef);
 
     // --- 1. ANIMATION DESKTOP (> 768px) ---
     mm.add("(min-width: 769px)", () => {
-      // Définition des états initiaux explicites
       gsap.set(topFlapRef.current, { rotateX: 0, zIndex: 12 });
-      gsap.set(cardRef.current, { y: 0, scale: 1, zIndex: 1 });
       if (sealRef.current) {
-        gsap.set(sealRef.current, { xPercent: -50, yPercent: -50, scale: 1, opacity: 1, rotate: 0, y: 0 });
+        gsap.set(sealRef.current, {
+          xPercent: -50,
+          yPercent: -50,
+          scale: 1,
+          opacity: 1,
+          rotate: 0,
+          y: 0,
+        });
       }
       if (shadowRef.current) {
         gsap.set(shadowRef.current, { scaleX: 1, opacity: 1 });
@@ -66,6 +66,10 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         onComplete: () => {
           setIsOpen(true);
           setIsAnimating(false);
+          // Directly proceed to the main invitation page with smooth transition
+          if (onProceed) {
+            onProceed();
+          }
         },
         onReverseComplete: () => {
           setIsOpen(false);
@@ -73,7 +77,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         },
       });
 
-      // 1. Sceau de cire : soulèvement délicat et dissolution vaporeuse
+      // 1. Sceau de cire : soulèvement délicat et disparition
       if (sealRef.current) {
         tl.to(
           sealRef.current,
@@ -97,8 +101,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         );
       }
 
-      // 2. Rabat supérieur : déploiement réaliste en 3D
-      // Étape A : ouverture de 0° à 90° (le rabat reste au premier plan avec sa drop-shadow qui s'atténue)
+      // 2. Rabat supérieur : déploiement en 3D
       tl.to(
         topFlapRef.current,
         {
@@ -118,19 +121,15 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           },
           0.18
         )
-        // À 90° pile : bascule au z-index 1 pour passer derrière l'enveloppe
         .set(topFlapRef.current, {
           zIndex: 1,
         })
-        // Étape B : repli doux de 90° à 180° derrière l'enveloppe
         .to(topFlapRef.current, {
           duration: 0.45,
           rotateX: 180,
           transformOrigin: "50% 0%",
           ease: "power2.out",
         })
-
-        // 3. Ombre portée au sol : s'étend légèrement pour créer un sentiment de profondeur
         .to(
           shadowRef.current,
           {
@@ -140,43 +139,23 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
             ease: "power2.out",
           },
           0.5
-        )
-
-        // 4. Glissement élégant de la carte hors de la pochette
-        // La carte monte avec fluidité le long de l'axe Y
-        .to(
-          cardRef.current,
-          {
-            duration: 0.68,
-            y: -155,
-            ease: "power2.inOut",
-          },
-          0.65
-        )
-        // Au sommet, la carte passe devant tous les pans de l'enveloppe
-        .set(cardRef.current, {
-          zIndex: 15,
-        })
-        // 5. Descente et mise en valeur majestueuse au premier plan avec un bel amorti
-        .to(cardRef.current, {
-          duration: 0.78,
-          y: -12,
-          scale: 1.25,
-          boxShadow:
-            "0 24px 50px rgba(50, 40, 30, 0.22), 0 6px 16px rgba(50, 40, 30, 0.12)",
-          ease: "power3.out",
-        });
+        );
 
       timelineRef.current = tl;
     });
 
-    // --- 2. ANIMATION MOBILE (<= 768px : Plein Écran) ---
+    // --- 2. ANIMATION MOBILE (<= 768px) ---
     mm.add("(max-width: 768px)", () => {
-      // Définition des états initiaux explicites
       gsap.set(topFlapRef.current, { rotateX: 0, zIndex: 12 });
-      gsap.set(cardRef.current, { y: 0, scale: 1, zIndex: 1 });
       if (sealRef.current) {
-        gsap.set(sealRef.current, { xPercent: -50, yPercent: -50, scale: 1, opacity: 1, rotate: 0, y: 0 });
+        gsap.set(sealRef.current, {
+          xPercent: -50,
+          yPercent: -50,
+          scale: 1,
+          opacity: 1,
+          rotate: 0,
+          y: 0,
+        });
       }
 
       const tl = gsap.timeline({
@@ -187,6 +166,10 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         onComplete: () => {
           setIsOpen(true);
           setIsAnimating(false);
+          // Directly proceed to the main invitation page with smooth transition
+          if (onProceed) {
+            onProceed();
+          }
         },
         onReverseComplete: () => {
           setIsOpen(false);
@@ -194,7 +177,6 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         },
       });
 
-      // 1. Sceau : disparition fluide
       if (sealRef.current) {
         tl.to(
           sealRef.current,
@@ -218,7 +200,6 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         );
       }
 
-      // 2. Déploiement du grand rabat supérieur
       tl.to(
         topFlapRef.current,
         {
@@ -237,36 +218,13 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           rotateX: 180,
           transformOrigin: "50% 0%",
           ease: "power2.out",
-        })
-
-        // 3. Montée fluide et rythmée de la carte hors de la pochette
-        .to(
-          cardRef.current,
-          {
-            duration: 0.72,
-            y: "-38vh",
-            ease: "power2.inOut",
-          },
-          0.65
-        )
-        // 4. Passage au premier plan
-        .set(cardRef.current, {
-          zIndex: 15,
-        })
-        // 5. Redescente douce et élégante au centre de l'écran
-        .to(cardRef.current, {
-          duration: 0.8,
-          y: 0,
-          scale: 1.02,
-          boxShadow: "0 20px 45px rgba(0, 0, 0, 0.28)",
-          ease: "power3.out",
         });
 
       timelineRef.current = tl;
     });
 
     return () => mm.revert();
-  }, []);
+  }, [onProceed]);
 
   const handleEnvelopeClick = () => {
     if (!isOpen && !isAnimating && timelineRef.current && !timelineRef.current.isActive()) {
@@ -276,35 +234,12 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
     }
   };
 
-  const handleClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (timelineRef.current && !timelineRef.current.isActive()) {
-      setIsAnimating(true);
-      setIsOpen(false);
-      timelineRef.current.reverse();
-      onClose?.();
-    }
-  };
-
-  // Fermeture avec la touche Échap
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen && timelineRef.current && !timelineRef.current.isActive()) {
-        setIsAnimating(true);
-        setIsOpen(false);
-        timelineRef.current.reverse();
-        onClose?.();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
   return (
     <div
       ref={containerRef}
       className={`envelope-wrapper ${satisfyFont.className} ${className}`}
     >
+      {/* 1. L'ENVELOPPE EXACTEMENT COMME LE DESIGN ORIGINAL */}
       <div
         className={`envelope ${isOpen ? "is-open" : ""}`}
         onClick={handleEnvelopeClick}
@@ -317,43 +252,6 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           }
         }}
       >
-        <div
-          ref={cardRef}
-          className="envelope-card"
-          onClick={(e) => {
-            if (isOpen) {
-              e.stopPropagation();
-            }
-          }}
-        >
-          <button
-            type="button"
-            className="envelope-card-close"
-            onClick={handleClose}
-            aria-label="Fermer la carte"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-
-          {children ? (
-            children
-          ) : (
-            <p className="envelope-card-text">{text}</p>
-          )}
-        </div>
-
         <div ref={topFlapRef} className="envelope-top" />
         <div className="envelope-right" />
         <div className="envelope-bottom" />
@@ -370,6 +268,15 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           draggable={false}
         />
       </div>
+
+      {/* Tap prompt */}
+      {!isOpen && !isAnimating && (
+        <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-bounce">
+          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#fdf8f0]/95 backdrop-blur-md border border-[#cda95a]/70 text-[#8a6825] font-serif text-xs uppercase tracking-[0.25em] shadow-lg">
+            ✨ Tap to open
+          </span>
+        </div>
+      )}
     </div>
   );
 };
