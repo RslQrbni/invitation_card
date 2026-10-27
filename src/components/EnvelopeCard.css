@@ -257,6 +257,62 @@
 }
 
 /* ========================================================
+   PAGE CONTAINER — the actual page that emerges from envelope
+   ======================================================== */
+.envelope-page-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  will-change: transform;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+  background-color: #f4ecd8;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.envelope-page-container.is-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  transform: none !important;
+  z-index: 100 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  pointer-events: auto !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.envelope-wrapper.is-fullscreen {
+  overflow: visible;
+  perspective: none;
+}
+
+.envelope.is-fullscreen {
+  cursor: default;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.envelope.is-fullscreen .envelope-top,
+.envelope.is-fullscreen .envelope-right,
+.envelope.is-fullscreen .envelope-bottom,
+.envelope.is-fullscreen .envelope-left,
+.envelope.is-fullscreen .envelope-shadow,
+.envelope.is-fullscreen .envelope-seal {
+  display: none !important;
+}
+
+/* ========================================================
    MODE MOBILE : L'enveloppe couvre tout l'écran
    ======================================================== */
 @media (max-width: 768px) {
