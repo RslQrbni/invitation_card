@@ -32,10 +32,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
     minutes: 45,
     seconds: 30,
   });
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
 
     const calculateTime = () => {
       const target = new Date(targetDate).getTime();

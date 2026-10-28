@@ -4,6 +4,7 @@ import React from "react";
 import AudioPlayer from "./AudioPlayer";
 import CountdownTimer from "./CountdownTimer";
 import ScheduleOfEvents from "./ScheduleOfEvents";
+import LocationSection from "./LocationSection";
 
 export interface SacredGardenInvitationProps {
   isAudioAutoPlay?: boolean;
@@ -162,7 +163,10 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
         </div>
 
         {/* 4. SCHEDULE OF EVENTS TIMELINE SECTION */}
-        <ScheduleOfEvents className="mb-16 sm:mb-24" />
+        <ScheduleOfEvents className="mb-14 sm:mb-20" />
+
+        {/* 5. LOCATION & VENUE NAVIGATION SECTION */}
+        <LocationSection className="mb-16 sm:mb-24" />
       </div>
     </div>
   );
