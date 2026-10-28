@@ -300,6 +300,20 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
     return () => mm.revert();
   }, [onFullScreen]);
 
+  useEffect(() => {
+    if (isFullScreen) {
+      document.documentElement.classList.add("envelope-opened");
+      document.body.classList.add("envelope-opened");
+      if (pageContainerRef.current) {
+        pageContainerRef.current.scrollTop = 0;
+      }
+      return () => {
+        document.documentElement.classList.remove("envelope-opened");
+        document.body.classList.remove("envelope-opened");
+      };
+    }
+  }, [isFullScreen]);
+
   const handleEnvelopeClick = () => {
     if (!isOpen && !isAnimating && timelineRef.current && !timelineRef.current.isActive()) {
       setIsAnimating(true);

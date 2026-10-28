@@ -29,7 +29,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
   useEffect(() => {
     if (autoPlay && audioRef.current) {
       audioRef.current.play().then(() => {
-        setIsPlaying(true);
+        setIsPlaying(false);
       }).catch((e) => {
         console.log("Audio autoplay prevented", e);
       });
