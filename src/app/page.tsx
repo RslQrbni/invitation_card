@@ -15,8 +15,6 @@ export default function Home() {
 
   const handleFullScreen = () => {
     setIsFullScreen(true);
-    // Smooth scroll to top of invitation
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

@@ -58,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${playfair.variable} ${cormorant.variable} ${inter.variable} ${pinyon.variable} ${amiri.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${playfair.variable} ${cormorant.variable} ${inter.variable} ${pinyon.variable} ${amiri.variable} h-full antialiased bg-[#F9F0E0]`}
     >
       <body className="min-h-full flex flex-col bg-[#F9F0E0] text-[#3b2d22]">
         {children}

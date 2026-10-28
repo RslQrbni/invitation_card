@@ -13,6 +13,8 @@
   --font-inter: var(--font-inter), 'Inter', sans-serif;
   --font-pinyon: var(--font-pinyon), 'Pinyon Script', cursive;
   --font-amiri: var(--font-amiri), 'Amiri', serif;
+  --paper-base: #f5f2eb;
+  --paper-grain-img: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper-grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='4' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23fff' surfaceScale='2' result='light'%3E%3CfeDistantLight azimuth='60' elevation='55'/%3E%3C/feDiffuseLighting%3E%3CfeBlend mode='multiply' in='SourceGraphic' in2='light'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%23f2efe6'/%3E%3Crect width='100%25' height='100%25' fill='%23faf8f5' filter='url(%23paper-grain)' opacity='0.9'/%3E%3C/svg%3E");
 }
 
 .font-pinyon {
@@ -23,6 +25,38 @@
   font-family: var(--font-amiri);
 }
 
+.font-cormorant {
+  font-family: var(--font-cormorant);
+}
+
+.font-playfair {
+  font-family: var(--font-playfair);
+}
+
+.font-cinzel {
+  font-family: var(--font-cinzel);
+}
+
+/* Authentic Envelope Card Paper Style Texture (no external photo) */
+.envelope-paper-card {
+  background-color: #ebe5d8;
+  background-image:
+    radial-gradient(ellipse at 50% 25%, rgba(255, 255, 255, 0.45) 0%, rgba(0, 0, 0, 0.05) 100%),
+    var(--paper-grain-img);
+  background-repeat: no-repeat, repeat;
+  background-position: center center, 0 0;
+  background-size: 100% 100%, auto;
+  box-shadow:
+    0 16px 36px rgba(55, 45, 30, 0.12),
+    0 4px 12px rgba(55, 45, 30, 0.08);
+}
+
+html {
+  background-color: #F9F0E0 !important;
+  scrollbar-width: thin;
+  scrollbar-color: #c9a764 #f4ebd9;
+}
+
 body {
   background-color: #F9F0E0 !important;
   color: #3b2d22;
@@ -31,6 +65,13 @@ body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  scrollbar-width: thin;
+  scrollbar-color: #c9a764 #f4ebd9;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c9a764 #f4ebd9;
 }
 
 /* Custom scrollbar */
@@ -46,6 +87,12 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #a67d2b;
+}
+
+html.envelope-opened,
+body.envelope-opened {
+  overflow: hidden !important;
+  height: 100% !important;
 }
 
 /* Gold shimmer keyframe animation */
