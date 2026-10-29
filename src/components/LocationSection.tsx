@@ -116,30 +116,6 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
           />
-
-          {/* Overlay: Burgundy Pill Button (OPEN IN GOOGLE MAPS) */}
-          <a
-            href="https://maps.app.goo.gl/SMCvrjqoz47hWKeF8"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-20 inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#5A0F1B] hover:bg-[#721524] text-[#fdf9f2] font-sans text-xs sm:text-sm font-semibold tracking-wider uppercase shadow-[0_4px_16px_rgba(90,15,27,0.4)] transition-all duration-300 transform hover:scale-105 active:scale-95 whitespace-nowrap cursor-pointer select-none"
-          >
-            <span>OPEN IN GOOGLE MAPS</span>
-            <svg
-              className="w-4 h-4 text-[#fdf9f2]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth="2.2"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
-          </a>
         </div>
 
         {/* Bottom Ornate Crest overlapping bottom border */}
@@ -154,74 +130,83 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
       </div>
 
       {/* ========================================================
-          4. IRANIAN NAVIGATION APPS (Neshan, Balad, Mobile Geo)
+          4. NAVIGATION APPS (Google Maps, Neshan, Balad Icons)
           ======================================================== */}
       <div className="w-full max-w-[440px] mt-8 sm:mt-10 flex flex-col items-center gap-3">
         <p className="font-amiri text-sm sm:text-base text-[#7c6a5a] select-none" dir="rtl">
-          مسیریابی مستقیم با برنامه‌های نقشه و بلد/نشان:
+          مسیریابی با برنامه‌های نقشه:
         </p>
 
-        <div className="w-full flex flex-col sm:flex-row items-stretch justify-center gap-2.5 sm:gap-3">
-          {/* 1. Neshan Button */}
+        <div className="flex items-center justify-center gap-5 sm:gap-7 mt-2" dir="rtl">
+          {/* 1. Google Maps */}
+          <a
+            href="https://maps.app.goo.gl/SMCvrjqoz47hWKeF8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:-translate-y-1 active:translate-y-0"
+            title="گوگل مپ (Google Maps)"
+            aria-label="Google Maps"
+          >
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#fbf7ee] border-2 border-[#c5a054]/50 shadow-[0_4px_12px_rgba(70,50,30,0.1)] group-hover:shadow-[0_8px_20px_rgba(197,160,84,0.35)] group-hover:border-[#c5a054] transition-all duration-300 flex items-center justify-center p-2.5 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/google_map.png"
+                alt="Google Maps"
+                className="w-full h-full object-contain filter group-hover:scale-110 transition-transform duration-300"
+                draggable={false}
+              />
+            </div>
+            <span className="font-amiri text-xs sm:text-sm text-[#5a4636] font-medium group-hover:text-[#8a6825] transition-colors select-none">
+              گوگل مپ
+            </span>
+          </a>
+
+          {/* 2. Neshan */}
           <a
             href="https://nshn.ir/?lat=35.5892&lng=53.4216"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#fbf7ee] hover:bg-[#f3ead4] text-[#5a4636] border border-[#c5a054] shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 text-xs sm:text-sm font-amiri font-medium select-none"
-            dir="rtl"
+            className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:-translate-y-1 active:translate-y-0"
+            title="نشان (Neshan)"
+            aria-label="Neshan"
           >
-            <svg
-              className="w-4 h-4 text-[#b58e3e] flex-shrink-0"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
-            </svg>
-            <span>مسیریابی با نشان (Neshan)</span>
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#fbf7ee] border-2 border-[#c5a054]/50 shadow-[0_4px_12px_rgba(70,50,30,0.1)] group-hover:shadow-[0_8px_20px_rgba(197,160,84,0.35)] group-hover:border-[#c5a054] transition-all duration-300 flex items-center justify-center p-2.5 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/neshan_map.png"
+                alt="Neshan"
+                className="w-full h-full object-contain filter group-hover:scale-110 transition-transform duration-300"
+                draggable={false}
+              />
+            </div>
+            <span className="font-amiri text-xs sm:text-sm text-[#5a4636] font-medium group-hover:text-[#8a6825] transition-colors select-none">
+              نشان
+            </span>
           </a>
 
-          {/* 2. Balad Button */}
+          {/* 3. Balad */}
           <a
             href="https://balad.ir/search?q=%D9%87%D8%AA%D9%84%20%DA%AF%D9%88%D8%AA%20%DA%A9%D9%87%20%D9%85%D8%A7%D9%84%20%D8%B3%D9%85%D9%86%D8%A7%D9%86"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#fbf7ee] hover:bg-[#f3ead4] text-[#5a4636] border border-[#c5a054] shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 text-xs sm:text-sm font-amiri font-medium select-none"
-            dir="rtl"
+            className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:-translate-y-1 active:translate-y-0"
+            title="بلد (Balad)"
+            aria-label="Balad"
           >
-            <svg
-              className="w-4 h-4 text-[#b58e3e] flex-shrink-0"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg>
-            <span>مسیریابی با بلد (Balad)</span>
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#fbf7ee] border-2 border-[#c5a054]/50 shadow-[0_4px_12px_rgba(70,50,30,0.1)] group-hover:shadow-[0_8px_20px_rgba(197,160,84,0.35)] group-hover:border-[#c5a054] transition-all duration-300 flex items-center justify-center p-2.5 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/balad_map.png"
+                alt="Balad"
+                className="w-full h-full object-contain filter group-hover:scale-110 transition-transform duration-300"
+                draggable={false}
+              />
+            </div>
+            <span className="font-amiri text-xs sm:text-sm text-[#5a4636] font-medium group-hover:text-[#8a6825] transition-colors select-none">
+              بلد
+            </span>
           </a>
         </div>
-
-        {/* 3. Mobile Device Native Intent Link */}
-        <a
-          href="geo:35.5892,53.4216?q=هتل گوت که مال سمنان"
-          className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-[#fbf7ee] hover:bg-[#f3ead4] text-[#5a4636] border border-[#c5a054]/80 shadow-sm hover:shadow-md transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 text-xs sm:text-sm font-amiri font-medium select-none"
-          dir="rtl"
-        >
-          <svg
-            className="w-4 h-4 text-[#b58e3e] flex-shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-            <path d="M12 18h.01" />
-          </svg>
-          <span>مسیریابی با گوگل</span>
-        </a>
       </div>
     </section>
   );
