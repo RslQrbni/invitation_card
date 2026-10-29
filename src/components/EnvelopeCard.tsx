@@ -366,14 +366,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
         />
       </div>
 
-      {/* Tap prompt */}
-      {!isOpen && !isAnimating && (
-        <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none animate-bounce">
-          <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#fdf8f0]/95 backdrop-blur-md border border-[#cda95a]/70 text-[#8a6825] font-serif text-xs uppercase tracking-[0.25em] shadow-lg">
-            ✨ Tap to open
-          </span>
-        </div>
-      )}
+
     </div>
   );
 };
