@@ -2,18 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 
-interface RsvpSectionProps {
+export interface RsvpSectionProps {
   className?: string;
 }
 
 export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
   const [name, setName] = useState("");
-  const [attendance, setAttendance] = useState<"yes" | "no" | null>("yes");
+  const [attending, setAttending] = useState<"Yes" | "No">("Yes");
+  const [guests, setGuests] = useState<number>(1);
   const [message, setMessage] = useState("");
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Load saved RSVP from localStorage if exists
+  // Load previously saved RSVP from localStorage if present
   useEffect(() => {
     try {
       const saved = localStorage.getItem("wedding_rsvp_response");
@@ -21,239 +24,401 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
         const parsed = JSON.parse(saved);
         if (parsed.name) {
           setName(parsed.name);
-          setAttendance(parsed.attendance || "yes");
+          setAttending(parsed.attending === "No" ? "No" : "Yes");
+          setGuests(typeof parsed.guests === "number" ? parsed.guests : 1);
           setMessage(parsed.message || "");
           setIsSubmitted(true);
         }
       }
     } catch {
-      // Ignore localStorage errors
+      // Ignore localStorage issues
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) {
+
+    const trimmedName = name.trim();
+    if (!trimmedName) {
       setErrorMessage("لطفاً نام و نام خانوادگی خود را وارد کنید");
       return;
     }
-    if (!attendance) {
+
+    if (!attending) {
       setErrorMessage("لطفاً وضعیت حضور خود را مشخص نمایید");
       return;
     }
 
     setErrorMessage("");
-    const responseData = {
-      name: name.trim(),
-      attendance,
-      message: message.trim(),
-      submittedAt: new Date().toISOString(),
-    };
+    setIsSubmitting(true);
 
     try {
-      localStorage.setItem("wedding_rsvp_response", JSON.stringify(responseData));
-    } catch {
-      // Ignore
+      const res = await fetch("/api/rsvp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: trimmedName,
+          attending,
+          guests: attending === "Yes" ? guests : 0,
+          message: message.trim(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(
+          data.error || "خطا در ارسال پاسخ. لطفاً دوباره تلاش کنید."
+        );
+      }
+
+      // Persist to local storage for returning visitor
+      try {
+        localStorage.setItem(
+          "wedding_rsvp_response",
+          JSON.stringify({
+            name: trimmedName,
+            attending,
+            guests: attending === "Yes" ? guests : 0,
+            message: message.trim(),
+            submittedAt: new Date().toISOString(),
+          })
+        );
+      } catch {
+        // Ignore localStorage quota errors
+      }
+
+      setIsSubmitted(true);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "خطا در برقراری ارتباط با سرور. لطفاً دوباره تلاش فرمایید.";
+      setErrorMessage(msg);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitted(true);
   };
 
-  const handleEdit = () => {
+  const handleResetOrEdit = () => {
     setIsSubmitted(false);
-  };
-
-  const handleWhatsAppSend = () => {
-    const statusText =
-      attendance === "yes"
-        ? "بله با کمال میل می‌آیم 🎉"
-        : "نه متاسفانه نمیتوانم 🕊️";
-
-    const text =
-      `*اعلام حضور در جشن عروسی*\n\n` +
-      `*نام و نام خانوادگی:* ${name}\n` +
-      `*وضعیت حضور:* ${statusText}\n` +
-      (message ? `*پیام تبریک:* ${message}\n` : "");
-
-    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    setErrorMessage("");
   };
 
   return (
     <section
-      className={`relative z-20 w-full max-w-[480px] mx-auto px-4 ${className}`}
+      aria-label="اعلام حضور در جشن"
+      className={`relative z-20 w-full max-w-[500px] mx-auto px-4 ${className}`}
       dir="rtl"
     >
-      <div className="relative w-full">
-        {/* Form Title & Subtitle */}
-        <div className="text-center pb-5">
+      <div className="relative w-full rounded-3xl bg-[#fdfaf3]/95 backdrop-blur-sm border-2 border-[#c5a054]/40 shadow-[0_16px_36px_rgba(70,50,30,0.14)] p-6 sm:p-8 text-right">
+        {/* ========================================================
+            HEADER (Persian)
+            ======================================================== */}
+        <div className="text-center pb-5 select-none">
+          {/* Decorative Gold Flourish */}
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <span className="w-10 sm:w-14 h-[1px] bg-gradient-to-r from-transparent to-[#c5a054]" />
+            <span className="text-[#b58e3e] text-xs">✦</span>
+            <span className="w-10 sm:w-14 h-[1px] bg-gradient-to-l from-transparent to-[#c5a054]" />
+          </div>
+
           <h2
             className="font-amiri text-2xl sm:text-3xl font-bold text-[#8a6825] leading-relaxed select-none"
             style={{
               textShadow:
-                "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(180,140,61,0.2)",
+                "0 1px 2px rgba(255,255,255,0.9), 0 2px 6px rgba(180,140,61,0.25)",
             }}
           >
             فرم اعلام حضور
           </h2>
-          <p className="font-amiri text-sm sm:text-base text-[#6b5847] mt-1.5 leading-relaxed select-none">
-            خوشحال میشویم با حضورتان جشن مارا کامل کنید
-          </p>
 
-          {/* Golden Divider */}
-          <div className="flex items-center justify-center gap-2 mt-4">
-            <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-[#c5a054]" />
-            <div className="w-1.5 h-1.5 rounded-full bg-[#c5a054]" />
-            <div className="h-[1px] w-12 bg-gradient-to-l from-transparent to-[#c5a054]" />
-          </div>
+          <p className="font-amiri text-sm sm:text-base text-[#6b5847] mt-1 leading-relaxed select-none">
+            خوشحال می‌شویم با حضورتان جشن ما را کامل کنید
+          </p>
         </div>
 
+        {/* ========================================================
+            FORM STATE: NOT SUBMITTED
+            ======================================================== */}
         {!isSubmitted ? (
-          <form onSubmit={handleSubmit} className="space-y-5 mt-2">
-            {/* 1. Name Input */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* 1. Full Name Input */}
             <div className="space-y-1.5">
-              <label className="block font-amiri text-sm sm:text-base font-bold text-[#5a4636]">
-                نام و نام خانوادگی
+              <label
+                htmlFor="rsvp-name"
+                className="block font-amiri text-sm sm:text-base font-bold text-[#4a392b]"
+              >
+                نام و نام خانوادگی <span className="text-[#b58e3e]">*</span>
               </label>
               <input
+                id="rsvp-name"
                 type="text"
                 required
+                disabled={isSubmitting}
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
                   if (errorMessage) setErrorMessage("");
                 }}
                 placeholder="لطفاً نام و نام خانوادگی خود را وارد کنید..."
-                className="w-full px-4 py-3 rounded-xl bg-white/95 border border-[#c5a054]/60 text-[#3b2d22] font-amiri text-sm sm:text-base placeholder:text-[#a89889] focus:outline-none focus:border-[#b58e3e] focus:ring-2 focus:ring-[#b58e3e]/25 transition-all shadow-sm"
+                className="w-full px-4 py-3 rounded-2xl bg-white/95 border border-[#c5a054]/50 text-[#3b2d22] font-amiri text-sm sm:text-base placeholder:text-[#a89889] focus:outline-none focus:border-[#b58e3e] focus:ring-2 focus:ring-[#b58e3e]/30 transition-all shadow-inner disabled:opacity-60 disabled:cursor-not-allowed"
               />
             </div>
 
-            {/* 2. Attendance Radio Group */}
+            {/* 2. Attendance Status */}
             <div className="space-y-2 pt-1">
-              <label className="block font-amiri text-sm sm:text-base font-bold text-[#5a4636]">
-                آیا در مراسم حضور دارید؟
+              <label className="block font-amiri text-sm sm:text-base font-bold text-[#4a392b]">
+                آیا در مراسم حضور دارید؟ <span className="text-[#b58e3e]">*</span>
               </label>
 
-              <div className="grid grid-cols-1 gap-2.5">
-                {/* Yes Option */}
-                <label
-                  onClick={() => setAttendance("yes")}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer transition-all duration-200 select-none ${attendance === "yes"
-                    ? "bg-[#b58e3e]/15 border-[#b58e3e] shadow-sm text-[#3b2d22]"
-                    : "bg-white/80 border-[#c5a054]/40 hover:bg-[#fbf4e8] text-[#5a4636]"
-                    }`}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Option 1: Yes */}
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => setAttending("Yes")}
+                  className={`relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 transition-all duration-200 cursor-pointer select-none ${
+                    attending === "Yes"
+                      ? "bg-gradient-to-b from-[#fbf4e5] to-[#f4ecd8] border-[#b58e3e] shadow-[0_4px_14px_rgba(181,142,62,0.25)] text-[#3b2d22]"
+                      : "bg-white/80 border-[#c5a054]/30 hover:bg-[#faf4e8] text-[#6b5847] hover:border-[#c5a054]/60"
+                  } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >
-                  <input
-                    type="radio"
-                    name="attendance"
-                    value="yes"
-                    checked={attendance === "yes"}
-                    onChange={() => setAttendance("yes")}
-                    className="w-4 h-4 text-[#b58e3e] accent-[#b58e3e] cursor-pointer"
-                  />
-                  <span className="font-amiri text-sm sm:text-base font-semibold">
-                    بله با کمال میل می‌آیم
+                  <span
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                      attending === "Yes"
+                        ? "border-[#b58e3e] bg-[#b58e3e]"
+                        : "border-[#a89889] bg-transparent"
+                    }`}
+                  >
+                    {attending === "Yes" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-white block" />
+                    )}
                   </span>
-                </label>
+                  <span className="font-amiri font-bold text-sm sm:text-base">
+                    بله، با کمال میل می‌آیم
+                  </span>
+                </button>
 
-                {/* No Option */}
-                <label
-                  onClick={() => setAttendance("no")}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer transition-all duration-200 select-none ${attendance === "no"
-                    ? "bg-[#5A0F1B]/10 border-[#5A0F1B]/80 shadow-sm text-[#3b2d22]"
-                    : "bg-white/80 border-[#c5a054]/40 hover:bg-[#fbf4e8] text-[#5a4636]"
-                    }`}
+                {/* Option 2: No */}
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => setAttending("No")}
+                  className={`relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 transition-all duration-200 cursor-pointer select-none ${
+                    attending === "No"
+                      ? "bg-gradient-to-b from-[#f9ecee] to-[#f4e1e4] border-[#8a2538] shadow-[0_4px_14px_rgba(138,37,56,0.18)] text-[#3b2d22]"
+                      : "bg-white/80 border-[#c5a054]/30 hover:bg-[#faf4e8] text-[#6b5847] hover:border-[#c5a054]/60"
+                  } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >
-                  <input
-                    type="radio"
-                    name="attendance"
-                    value="no"
-                    checked={attendance === "no"}
-                    onChange={() => setAttendance("no")}
-                    className="w-4 h-4 text-[#5A0F1B] accent-[#5A0F1B] cursor-pointer"
-                  />
-                  <span className="font-amiri text-sm sm:text-base font-semibold">
-                    نه متاسفانه نمیتوانم
+                  <span
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
+                      attending === "No"
+                        ? "border-[#8a2538] bg-[#8a2538]"
+                        : "border-[#a89889] bg-transparent"
+                    }`}
+                  >
+                    {attending === "No" && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-white block" />
+                    )}
                   </span>
-                </label>
+                  <span className="font-amiri font-bold text-sm sm:text-base">
+                    نه، متأسفانه نمی‌توانم
+                  </span>
+                </button>
               </div>
             </div>
 
-            {/* 3. Greeting Message Textarea */}
+            {/* 3. Number of Guests (Only shown when attending === "Yes") */}
+            {attending === "Yes" && (
+              <div className="space-y-1.5 pt-1 animate-fadeIn">
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="rsvp-guests"
+                    className="block font-amiri text-sm sm:text-base font-bold text-[#4a392b]"
+                  >
+                    تعداد نفرات همراه (شامل خودتان)
+                  </label>
+                  <span className="font-amiri text-xs text-[#8c745f]">
+                    حداکثر ۱۰ نفر
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 p-2 rounded-2xl bg-white/95 border border-[#c5a054]/50 shadow-inner">
+                  {/* Minus button */}
+                  <button
+                    type="button"
+                    disabled={isSubmitting || guests <= 1}
+                    onClick={() => setGuests((g) => Math.max(1, g - 1))}
+                    className="w-10 h-10 rounded-xl bg-[#f4ecd8] hover:bg-[#e8dcbf] text-[#6b5133] font-bold text-lg flex items-center justify-center transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer select-none"
+                    aria-label="کاهش تعداد مهمانان"
+                  >
+                    −
+                  </button>
+
+                  <div className="flex flex-col items-center">
+                    <span className="font-amiri text-xl font-bold text-[#3b2d22]">
+                      {guests} نفر
+                    </span>
+                  </div>
+
+                  {/* Plus button */}
+                  <button
+                    type="button"
+                    disabled={isSubmitting || guests >= 10}
+                    onClick={() => setGuests((g) => Math.min(10, g + 1))}
+                    className="w-10 h-10 rounded-xl bg-[#f4ecd8] hover:bg-[#e8dcbf] text-[#6b5133] font-bold text-lg flex items-center justify-center transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer select-none"
+                    aria-label="افزایش تعداد مهمانان"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* 4. Wishes / Message for the Bride & Groom */}
             <div className="space-y-1.5 pt-1">
-              <label className="block font-amiri text-sm sm:text-base font-bold text-[#5a4636]">
-                پیام تبریک
+              <label
+                htmlFor="rsvp-message"
+                className="block font-amiri text-sm sm:text-base font-bold text-[#4a392b]"
+              >
+                پیام تبریک و دعای خیر
               </label>
               <textarea
+                id="rsvp-message"
                 rows={3}
+                disabled={isSubmitting}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
+                maxLength={1500}
                 placeholder="پیام یا دعای خیر خود را برای عروس و داماد بنویسید..."
-                className="w-full px-4 py-3 rounded-xl bg-white/95 border border-[#c5a054]/60 text-[#3b2d22] font-amiri text-sm sm:text-base placeholder:text-[#a89889] focus:outline-none focus:border-[#b58e3e] focus:ring-2 focus:ring-[#b58e3e]/25 transition-all resize-none shadow-sm"
+                className="w-full px-4 py-3 rounded-2xl bg-white/95 border border-[#c5a054]/50 text-[#3b2d22] font-amiri text-sm sm:text-base placeholder:text-[#a89889] focus:outline-none focus:border-[#b58e3e] focus:ring-2 focus:ring-[#b58e3e]/30 transition-all resize-none shadow-inner disabled:opacity-60 disabled:cursor-not-allowed"
               />
             </div>
 
+            {/* Error Notification Alert */}
             {errorMessage && (
-              <p className="font-amiri text-xs sm:text-sm text-[#b22222] font-medium text-center">
-                {errorMessage}
-              </p>
+              <div
+                role="alert"
+                className="p-3.5 rounded-2xl bg-[#5A0F1B]/10 border border-[#5A0F1B]/30 text-[#6d1322] font-amiri text-sm text-center flex items-center justify-center gap-2"
+              >
+                <span>⚠</span>
+                <span>{errorMessage}</span>
+              </div>
             )}
 
-            {/* 4. Submit Button */}
+            {/* Submit Button */}
             <div className="pt-2">
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#9e762c] via-[#b58e3e] to-[#9e762c] hover:from-[#b58e3e] hover:to-[#8a6825] text-[#fdfaf3] font-amiri text-base sm:text-lg font-bold tracking-wide shadow-[0_4px_18px_rgba(180,140,61,0.4)] hover:shadow-[0_6px_24px_rgba(180,140,61,0.55)] transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer select-none"
+                disabled={isSubmitting}
+                className="relative w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#8a6825] via-[#b58e3e] to-[#8a6825] hover:from-[#9c762c] hover:via-[#c59d48] hover:to-[#9c762c] text-[#fdfaf3] font-amiri text-base sm:text-lg font-bold tracking-wide shadow-[0_4px_18px_rgba(180,140,61,0.4)] hover:shadow-[0_6px_24px_rgba(180,140,61,0.55)] transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer select-none flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none"
               >
-                ثبت و ارسال پاسخ
+                {isSubmitting ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <span>در حال ارسال...</span>
+                  </>
+                ) : (
+                  <span>ثبت و ارسال پاسخ</span>
+                )}
               </button>
             </div>
           </form>
         ) : (
-          /* Confirmation Success View */
-          <div className="text-center py-4 space-y-4">
-            <div className="w-14 h-14 mx-auto rounded-full bg-[#b58e3e]/15 border-2 border-[#b58e3e] flex items-center justify-center text-[#8a6825] text-2xl shadow-sm">
+          /* ========================================================
+              CONFIRMATION SUCCESS CARD (Persian)
+              ======================================================== */
+          <div className="text-center py-4 space-y-5 animate-fadeIn">
+            {/* Elegant Checkmark Badge */}
+            <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-b from-[#fbf4e5] to-[#f4ecd8] border-2 border-[#b58e3e] flex items-center justify-center text-[#8a6825] text-2xl shadow-[0_4px_16px_rgba(181,142,62,0.25)]">
               ✓
             </div>
 
-            <div className="space-y-1">
-              <h3 className="font-amiri text-xl sm:text-2xl font-bold text-[#3b2d22]">
+            {/* Persian Heading */}
+            <div>
+              <h2
+                className="font-amiri text-2xl sm:text-3xl font-bold text-[#8a6825] leading-tight select-none"
+                style={{
+                  textShadow:
+                    "0 1px 2px rgba(255,255,255,0.9), 0 2px 8px rgba(180,140,61,0.25)",
+                }}
+              >
                 پاسخ شما با موفقیت ثبت شد
-              </h3>
-              <p className="font-amiri text-sm sm:text-base text-[#6b5847]">
-                {name} عزیز، از اینکه پاسخ دادید سپاسگزاریم ✨
+              </h2>
+              <p className="font-amiri text-base sm:text-lg text-[#5a432b] mt-1.5 font-medium">
+                {name} عزیز، از اینکه پاسخ دادید سپاسگزاریم
               </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-white/80 border border-[#c5a054]/40 text-sm font-amiri space-y-1.5 text-right">
-              <p className="text-[#5a4636]">
-                <strong className="text-[#8a6825]">وضعیت حضور:</strong>{" "}
-                {attendance === "yes" ? "بله با کمال میل می‌آیم" : "نه متاسفانه نمیتوانم"}
-              </p>
-              {message && (
-                <p className="text-[#5a4636]">
-                  <strong className="text-[#8a6825]">پیام تبریک:</strong> {message}
+            {/* Tailored Confirmation Message in Amiri */}
+            <div className="max-w-md mx-auto space-y-2">
+              {attending === "Yes" ? (
+                <p className="font-amiri text-base sm:text-lg text-[#6b5847] leading-relaxed">
+                  از اینکه در این شب خاطره‌انگیز کنار ما خواهید بود بی‌نهایت خوشحالیم ✨
+                </p>
+              ) : (
+                <p className="font-amiri text-base sm:text-lg text-[#6b5847] leading-relaxed">
+                  جای شما در این جشن بسیار خالی خواهد بود؛ از پیام پرمهر و دعای خیرتان صمیمانه سپاسگزاریم 🕊️
                 </p>
               )}
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2.5 pt-2 justify-center">
-              <button
-                type="button"
-                onClick={handleWhatsAppSend}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-amiri text-sm font-bold flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer select-none"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
-                </svg>
-                <span>ارسال در واتس‌اپ</span>
-              </button>
+            {/* Response Summary Card */}
+            <div className="p-4 rounded-2xl bg-white/90 border border-[#c5a054]/40 text-sm font-amiri space-y-2 text-right shadow-sm">
+              <div className="flex items-center justify-between border-b border-[#c5a054]/20 pb-2">
+                <span className="text-[#7c6652]">وضعیت حضور:</span>
+                <span className="font-bold text-[#8a6825]">
+                  {attending === "Yes" ? "بله، با کمال میل می‌آیم" : "نه، متأسفانه نمی‌توانم"}
+                </span>
+              </div>
 
+              {attending === "Yes" && (
+                <div className="flex items-center justify-between border-b border-[#c5a054]/20 pb-2">
+                  <span className="text-[#7c6652]">تعداد مهمانان:</span>
+                  <span className="font-bold text-[#8a6825]">{guests} نفر</span>
+                </div>
+              )}
+
+              {message && (
+                <div className="pt-1">
+                  <span className="text-[#7c6652] block text-xs mb-1">پیام شما:</span>
+                  <p className="text-[#4a392b] bg-[#fbf8f0] p-2.5 rounded-xl border border-[#c5a054]/25 leading-relaxed">
+                    «{message}»
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Action Button: Send Another Response */}
+            <div className="flex justify-center pt-2">
               <button
                 type="button"
-                onClick={handleEdit}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-[#f4ebd9] hover:bg-[#e8ddcf] text-[#6a5140] font-amiri text-sm font-medium border border-[#c5a054]/50 transition-colors cursor-pointer select-none"
+                onClick={handleResetOrEdit}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full bg-[#f4ecd8] hover:bg-[#ebdcc0] text-[#6a5140] font-amiri text-sm font-medium border border-[#c5a054]/50 transition-colors cursor-pointer select-none"
               >
-                ویرایش پاسخ
+                ویرایش یا ارسال پاسخ جدید
               </button>
             </div>
           </div>
