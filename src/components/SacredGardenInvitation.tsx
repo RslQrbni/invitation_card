@@ -5,6 +5,8 @@ import AudioPlayer from "./AudioPlayer";
 import CountdownTimer from "./CountdownTimer";
 import ScheduleOfEvents from "./ScheduleOfEvents";
 import LocationSection from "./LocationSection";
+import RsvpSection from "./RsvpSection";
+import BrideGroomSection from "./BrideGroomSection";
 
 export interface SacredGardenInvitationProps {
   isAudioAutoPlay?: boolean;
@@ -244,6 +246,12 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
             </div>
           </div>
         </div>
+
+        {/* 7. RSVP ATTENDANCE FORM SECTION */}
+        <RsvpSection className="mb-16 sm:mb-24" />
+
+        {/* 8. BRIDE & GROOM PORTRAIT SECTION */}
+        <BrideGroomSection className="mb-8 sm:mb-14" />
       </div>
     </div>
   );
