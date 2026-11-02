@@ -95,6 +95,56 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
               preload="auto"
               className="w-full h-full object-cover block"
             />
+
+            {/* TEXT ON TOP OF THE VIDEO: صلصال و شهمامه (CASCADING NASTALIQ CALLIGRAPHY) */}
+            <div className="absolute top-[20%] sm:top-[22%] md:top-[25%] inset-x-0 flex flex-col items-center justify-center z-20 pointer-events-none select-none px-6">
+              <div
+                className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] flex flex-col font-nastaliq"
+                style={{
+                  fontFamily: "var(--font-nastaliq), 'IranNastaliq', 'Noto Nastaliq Urdu', serif",
+                }}
+                dir="rtl"
+              >
+                {/* 1. TOP RIGHT: صلصال */}
+                <div className="text-right pr-2 sm:pr-4">
+                  <span
+                    className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
+                    style={{
+                      textShadow:
+                        "0 2px 8px rgba(0,0,0,0.95), 0 4px 18px rgba(0,0,0,0.85), 0 0 24px rgba(212,175,98,0.5)",
+                    }}
+                  >
+                    صلصال
+                  </span>
+                </div>
+
+                {/* 2. MIDDLE CENTER: و */}
+                <div className="text-center -my-2 sm:-my-3">
+                  <span
+                    className="text-2xl sm:text-3xl md:text-4xl text-[#f3e3be] font-normal leading-loose inline-block"
+                    style={{
+                      textShadow:
+                        "0 2px 6px rgba(0,0,0,0.95), 0 4px 14px rgba(0,0,0,0.8)",
+                    }}
+                  >
+                    و
+                  </span>
+                </div>
+
+                {/* 3. BOTTOM LEFT (FORWARD): شهمامه */}
+                <div className="text-left pl-2 sm:pl-4">
+                  <span
+                    className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
+                    style={{
+                      textShadow:
+                        "0 2px 8px rgba(0,0,0,0.95), 0 4px 18px rgba(0,0,0,0.85), 0 0 24px rgba(212,175,98,0.5)",
+                    }}
+                  >
+                    شهمامه
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
