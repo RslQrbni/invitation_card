@@ -1,6 +1,24 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Cinzel, Playfair_Display, Cormorant_Garamond, Inter, Pinyon_Script, Amiri } from "next/font/google";
 import "./globals.css";
+
+const nastaliq = localFont({
+  src: [
+    {
+      path: "./fonts/IranNastaliq.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/IranNastaliq.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-nastaliq",
+  display: "swap",
+});
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
@@ -58,7 +76,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${playfair.variable} ${cormorant.variable} ${inter.variable} ${pinyon.variable} ${amiri.variable} h-full antialiased bg-[#F9F0E0]`}
+      className={`${cinzel.variable} ${playfair.variable} ${cormorant.variable} ${inter.variable} ${pinyon.variable} ${amiri.variable} ${nastaliq.variable} h-full antialiased bg-[#F9F0E0]`}
     >
       <body className="min-h-full flex flex-col bg-[#F9F0E0] text-[#3b2d22]">
         {children}

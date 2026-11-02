@@ -37,6 +37,20 @@
   font-family: var(--font-cinzel);
 }
 
+@font-face {
+  font-family: 'IranNastaliq';
+  src: url('/fonts/IranNastaliq.woff2') format('woff2'),
+       url('/fonts/IranNastaliq.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-nastaliq,
+.nastaliq-text {
+  font-family: var(--font-nastaliq), 'IranNastaliq', 'Noto Nastaliq Urdu', serif !important;
+}
+
 /* Authentic Envelope Card Paper Style Texture (no external photo) */
 .envelope-paper-card {
   background-color: #ebe5d8;
@@ -78,13 +92,16 @@ body {
 ::-webkit-scrollbar {
   width: 7px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f4ebd9;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #c9a764;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #a67d2b;
 }
@@ -100,9 +117,11 @@ body.envelope-opened {
   0% {
     background-position: 100% 0;
   }
+
   50% {
     background-position: 0% 0;
   }
+
   100% {
     background-position: 100% 0;
   }
@@ -118,9 +137,12 @@ body.envelope-opened {
 }
 
 @keyframes floatSlow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-8px);
   }
@@ -135,9 +157,11 @@ body.envelope-opened {
   0% {
     transform: scale(1) rotate(0deg);
   }
+
   50% {
     transform: scale(1.05) rotate(2deg);
   }
+
   100% {
     transform: scale(1) rotate(0deg);
   }
@@ -147,9 +171,11 @@ body.envelope-opened {
   0% {
     transform: scale(1) rotate(0deg);
   }
+
   50% {
     transform: scale(1.05) rotate(-2deg);
   }
+
   100% {
     transform: scale(1) rotate(0deg);
   }
