@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 export interface CountdownTimerProps {
   /** Target ceremony date in ISO format (e.g. "2026-12-08T18:00:00") */
   targetDate?: string;
-  /** Header title above the timer. Default: "The ceremony begin in" */
+  /** Header title above the timer. Default: "شروع جشن در" */
   title?: string;
   /** Optional container class name */
   className?: string;
@@ -22,7 +22,7 @@ interface TimeRemaining {
 
 export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   targetDate = "2026-12-08T18:00:00",
-  title = "The ceremony begin in",
+  title = "شروع جشن در",
   className = "",
   showBackground = false,
 }) => {
@@ -48,7 +48,9 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       const hours = Math.floor(
         (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
-      const minutes = Math.floor((difference % (1000 * 60)) / (1000 * 60));
+      const minutes = Math.floor(
+        (difference % (1000 * 60 * 60)) / (1000 * 60)
+      );
       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
       setTimeLeft({ days, hours, minutes, seconds });
@@ -63,17 +65,17 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const padZero = (n: number) => String(n).padStart(2, "0");
 
   const units = [
-    { label: "Days", value: padZero(timeLeft.days) },
-    { label: "Hours", value: padZero(timeLeft.hours) },
-    { label: "Minutes", value: padZero(timeLeft.minutes) },
-    { label: "Seconds", value: padZero(timeLeft.seconds) },
+    { label: "روز", value: padZero(timeLeft.days) },
+    { label: "ساعت", value: padZero(timeLeft.hours) },
+    { label: "دقیقه", value: padZero(timeLeft.minutes) },
+    { label: "ثانیه", value: padZero(timeLeft.seconds) },
   ];
 
   const content = (
-    <div className="w-full flex flex-col items-center justify-center text-center select-none">
-      {/* 1. CALLIGRAPHIC HEADER (Matches photo cursive script) */}
+    <div className="w-full flex flex-col items-center justify-center text-center select-none" dir="rtl">
+      {/* 1. CALLIGRAPHIC HEADER (Persian) */}
       <h3
-        className="font-pinyon text-2xl sm:text-3xl md:text-4xl text-[#ad873b] leading-normal mb-3 sm:mb-4 md:mb-5 select-none capitalize"
+        className="font-amiri text-2xl sm:text-3xl md:text-4xl text-[#ad873b] font-bold leading-normal mb-3 sm:mb-4 md:mb-5 select-none"
         style={{
           textShadow:
             "0 1px 1px rgba(255,255,255,0.85), 0 2px 4px rgba(173,135,59,0.18)",
@@ -83,7 +85,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
       </h3>
 
       {/* 2. TIMER DIGITS & LABELS ROW */}
-      <div className="flex items-start justify-center gap-1.5 sm:gap-3 md:gap-5 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
+      <div className="flex items-start justify-center gap-1.5 sm:gap-3 md:gap-5 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto" dir="rtl">
         {units.map((unit, index) => (
           <React.Fragment key={unit.label}>
             {/* Unit block: digit on top, label below */}
@@ -98,7 +100,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                 {unit.value}
               </span>
               <span
-                className="mt-1 sm:mt-1.5 font-cormorant text-[11px] sm:text-xs md:text-sm text-[#ad873b] font-normal tracking-wider capitalize"
+                className="mt-1 sm:mt-1.5 font-amiri text-xs sm:text-sm md:text-base text-[#ad873b] font-medium tracking-normal"
                 style={{
                   textShadow: "0 1px 1px rgba(255,255,255,0.6)",
                 }}
@@ -110,7 +112,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
             {/* Colon separator between units (vertically aligned with the digits) */}
             {index < units.length - 1 && (
               <span
-                className="font-cormorant text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#ad873b] font-light leading-none self-start pt-0.5 sm:pt-1"
+                className="font-cormorant text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#ad873b] font-light leading-none self-start pt-0.5 sm:pt-1 select-none"
                 style={{
                   textShadow:
                     "0 1px 1px rgba(255,255,255,0.7), 0 2px 4px rgba(173,135,59,0.15)",
