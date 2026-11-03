@@ -49,7 +49,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
 
     // --- DESKTOP (> 768px) ---
     mm.add("(min-width: 769px)", () => {
-      const startScale = Math.min(270 / window.innerWidth, 175 / window.innerHeight);
+      const startScale = Math.min(380 / window.innerWidth, 250 / window.innerHeight);
 
       gsap.set(topFlapRef.current, { rotateX: 0, zIndex: 12 });
       if (sealRef.current) {
@@ -144,7 +144,7 @@ export const EnvelopeCard: React.FC<EnvelopeCardProps> = ({
           pageContainerRef.current,
           {
             duration: 1.2,
-            y: -210,
+            y: -290,
             zIndex: 2,
             ease: "power2.inOut",
           },

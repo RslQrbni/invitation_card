@@ -1,0 +1,3 @@
+problem of farsi font in safari Iphones
+change the forme background and put the paper background
+add the photo uploading button

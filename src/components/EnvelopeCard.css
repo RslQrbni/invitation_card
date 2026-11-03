@@ -28,8 +28,8 @@
   background-repeat: no-repeat, no-repeat, repeat;
   background-position: center center, center center, 0 0;
   background-size: contain, 100% 100%, auto;
-  width: 300px;
-  height: 200px;
+  width: 420px;
+  height: 280px;
   cursor: pointer;
   z-index: 5;
   transform-style: preserve-3d;
@@ -230,15 +230,7 @@
 }
 
 .envelope-shadow {
-  position: absolute;
-  bottom: -100px;
-  left: 75px;
-  width: 150px;
-  height: 5px;
-  border-radius: 3px;
-  box-shadow: 10px 10px 7px rgba(180, 175, 160, 0.35);
-  pointer-events: none;
-  transform-origin: center;
+  display: none;
 }
 
 .envelope-seal {
@@ -246,7 +238,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 60px;
+  width: 78px;
   height: auto;
   z-index: 15;
   pointer-events: none;

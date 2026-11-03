@@ -16,7 +16,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
   isAudioAutoPlay = false,
 }) => {
   return (
-    <div className="relative min-h-screen min-h-[100dvh] w-full bg-[#f4ecd8] text-[#3b2d22] flex flex-col items-center justify-start p-0 sm:py-10 sm:px-6 overflow-x-hidden selection:bg-[#cda95a]/30">
+    <div className="relative min-h-screen min-h-[100dvh] w-full bg-[#f4ecd8] text-[#3b2d22] flex flex-col items-center justify-start p-0 sm:pt-0 sm:px-6 overflow-x-hidden selection:bg-[#cda95a]/30">
       {/* Floating Background Soundtrack 
       the music */}
       {/* <AudioPlayer src="/sacred-garden/music.mp3" autoPlay={isAudioAutoPlay} /> */}
@@ -65,7 +65,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
       {/* ========================================================
           THE INVITATION CARD (Responsive for Mobile & Desktop)
           ======================================================== */}
-      <div className="relative w-full max-w-[95%] sm:max-w-[520px] md:max-w-[560px] mx-auto flex flex-col items-center px-2 sm:px-4 md:px-0">
+      <div className="relative w-full max-w-[99%] sm:max-w-[520px] md:max-w-[560px] mx-auto flex flex-col items-center px-0 sm:px-4 md:px-0">
         {/* 1. TOP VIDEO CONTAINER WITH CORNER FLOWERS OVERLAY */}
         <div className="relative w-full overflow-visible">
           {/* LEFT CORNER FLOWER */}
