@@ -1,3 +1,12 @@
 problem of farsi font in safari Iphones
 change the forme background and put the paper background
 add the photo uploading button
+
+
+const EVENTS: TimelineEvent[] = [
+ { time: " ۵:۰۰بعد از ظهر ,itleLines: ["آمدن مهمانها"] },
+
+  { time: "7 PM", titleLines: ["Mocktail", "Hour"] },
+  { time: "8 PM", titleLines: ["Dinner"] },
+  { time: "9 PM", titleLines: ["Dance"] },
+];

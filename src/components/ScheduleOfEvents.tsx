@@ -15,11 +15,13 @@ interface TimelineEvent {
 }
 
 const EVENTS: TimelineEvent[] = [
-  { time: "5 PM", titleLines: ["Guest", "Arrival"] },
-  { time: "6 PM", titleLines: ["Nikkah", "Ceremony"] },
-  { time: "7 PM", titleLines: ["Mocktail", "Hour"] },
-  { time: "8 PM", titleLines: ["Dinner"] },
-  { time: "9 PM", titleLines: ["Dance"] },
+  {
+    time: "۵ ب.ظ", titleLines: ["آمدن مهمانها"],
+  },
+  { time: "۶  ب.ظ", titleLines: ["حنا بندان"] },
+  { time: "۷  ب.ظ", titleLines: [" رقص"] },
+  { time: "۸  ب.ظ", titleLines: ["شام"] },
+  { time: "۹  ب.ظ", titleLines: ["رقص"] },
 ];
 
 export const ScheduleOfEvents: React.FC<ScheduleOfEventsProps> = ({
@@ -129,7 +131,7 @@ export const ScheduleOfEvents: React.FC<ScheduleOfEventsProps> = ({
               "0 1px 1px rgba(255,255,255,0.85), 0 2px 4px rgba(181,142,62,0.18)",
           }}
         >
-          Schedule of Events
+          برنامه جشن
         </h2>
         <img
           src="/sacred-garden/right-element_1.png.webp"
@@ -205,9 +207,9 @@ export const ScheduleOfEvents: React.FC<ScheduleOfEventsProps> = ({
         <div className="grid grid-cols-[1fr_48px_1fr] sm:grid-cols-[1fr_64px_1fr] w-full">
           {EVENTS.map((event, index) => (
             <React.Fragment key={index}>
-              {/* Left Column: Time in Cormorant Garamond */}
-              <div className="h-[72px] sm:h-[84px] md:h-[92px] flex items-center justify-end pr-3 sm:pr-6 text-right">
-                <span className="font-cormorant text-2xl sm:text-3xl text-[#7c6a5a] font-normal tracking-wide whitespace-nowrap">
+              {/* Left Column: Time in Cormorant Garamond / Amiri */}
+              <div className="h-[72px] sm:h-[84px] md:h-[92px] flex items-center justify-end pr-3 sm:pr-6 text-right ">
+                <span className="font-amiri font-cormorant text-lg sm:text-2xl text-[#7c6a5a] font-normal tracking-wide whitespace-nowrap ">
                   {event.time}
                 </span>
               </div>
@@ -215,12 +217,12 @@ export const ScheduleOfEvents: React.FC<ScheduleOfEventsProps> = ({
               {/* Center Column: spacer matching the track width */}
               <div className="h-[72px] sm:h-[84px] md:h-[92px] w-full" />
 
-              {/* Right Column: Event Title in Cormorant Garamond */}
-              <div className="h-[72px] sm:h-[84px] md:h-[92px] flex flex-col items-start justify-center pl-3 sm:pr-6 text-left leading-tight sm:leading-snug">
+              {/* Right Column: Event Title in Cormorant Garamond / Amiri */}
+              <div className="h-[72px] sm:h-[84px] md:h-[92px] flex flex-col justify-center pl-3 sm:pl-6 text-left leading-tight sm:leading-snug">
                 {event.titleLines.map((line, lineIdx) => (
                   <span
                     key={lineIdx}
-                    className="font-cormorant text-lg sm:text-2xl text-[#7c6a5a] font-normal tracking-wide"
+                    className="w-full text-left font-amiri font-cormorant text-base sm:text-xl md:text-2xl text-[#7c6a5a] font-normal tracking-wide whitespace-nowrap"
                   >
                     {line}
                   </span>

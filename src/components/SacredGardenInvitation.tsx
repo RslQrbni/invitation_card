@@ -1,26 +1,17 @@
 "use client";
 
 import React from "react";
-import AudioPlayer from "./AudioPlayer";
 import CountdownTimer from "./CountdownTimer";
 import ScheduleOfEvents from "./ScheduleOfEvents";
 import LocationSection from "./LocationSection";
 import RsvpSection from "./RsvpSection";
 import BrideGroomSection from "./BrideGroomSection";
 
-export interface SacredGardenInvitationProps {
-  isAudioAutoPlay?: boolean;
-}
+export interface SacredGardenInvitationProps {}
 
-export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
-  isAudioAutoPlay = false,
-}) => {
+export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () => {
   return (
     <div className="relative min-h-screen min-h-[100dvh] w-full bg-[#f4ecd8] text-[#3b2d22] flex flex-col items-center justify-start p-0 sm:pt-0 sm:px-6 overflow-x-hidden selection:bg-[#cda95a]/30">
-      {/* Floating Background Soundtrack 
-      the music */}
-      {/* <AudioPlayer src="/sacred-garden/music.mp3" autoPlay={isAudioAutoPlay} /> */}
-
       {/* Keyframe animations for corner flower heartbeat motion */}
       <style>{`
         @keyframes flowerMotionLeft {
@@ -106,7 +97,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
                 dir="rtl"
               >
                 {/* 1. TOP RIGHT: صلصال */}
-                <div className="text-right pr-2 sm:pr-4">
+                <div className="text-center">
                   <span
                     className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
                     style={{
@@ -132,7 +123,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
                 </div>
 
                 {/* 3. BOTTOM LEFT (FORWARD): شهمامه */}
-                <div className="text-left pl-2 sm:pl-4">
+                <div className="text-center">
                   <span
                     className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
                     style={{
