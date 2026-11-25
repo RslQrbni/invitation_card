@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import EnvelopeCard from "@/components/EnvelopeCard";
 import SacredGardenInvitation from "@/components/SacredGardenInvitation";
 import PageLoader from "@/components/PageLoader";
+import MusicPlayer from "@/components/MusicPlayer";
 // import FloatingButterflies from "@/components/FloatingButterflies";
 
 export default function Home() {
@@ -51,6 +52,9 @@ export default function Home() {
           <span className="hidden sm:inline">Envelope</span>
         </button>
       )}
+
+      {/* Floating Background Music Player — shown only when the envelope is opened */}
+      {isFullScreen && <MusicPlayer />}
     </main>
   );
 }

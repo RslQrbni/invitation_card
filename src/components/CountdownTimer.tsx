@@ -83,7 +83,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
     <div className="w-full flex flex-col items-center justify-center text-center select-none" dir="rtl">
       {/* 1. CALLIGRAPHIC HEADER (Persian) */}
       <h3
-        className="font-amiri text-2xl sm:text-3xl md:text-4xl text-[#ad873b] font-bold leading-normal mb-3 sm:mb-4 md:mb-5 select-none"
+        className="font-amiri text-xl sm:text-2xl md:text-3xl text-[#ad873b] font-medium leading-normal mb-3 sm:mb-4 md:mb-5 select-none"
         style={{
           textShadow:
             "0 1px 1px rgba(255,255,255,0.85), 0 2px 4px rgba(173,135,59,0.18)",
@@ -99,16 +99,16 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
             {/* Unit block: digit on top, label below */}
             <div className="flex flex-col items-center flex-1 min-w-[42px] sm:min-w-[55px] md:min-w-[65px]">
               <span
-                className="font-amiri font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#ad873b] tabular-nums tracking-tight leading-none"
+                className="font-amiri font-normal text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#ad873b] tabular-nums tracking-tight leading-none"
                 style={{
                   textShadow:
-                    "0 1px 1px rgba(255,255,255,0.7), 0 2px 4px rgba(173,135,59,0.15)",
+                    "0 1px 1px rgba(255,255,255,0.7)",
                 }}
               >
                 {unit.value}
               </span>
               <span
-                className="mt-1 sm:mt-1.5 font-amiri text-xs sm:text-sm md:text-base text-[#ad873b] font-medium tracking-normal"
+                className="mt-1 sm:mt-1.5 font-amiri text-xs sm:text-sm md:text-base text-[#ad873b] font-normal tracking-normal"
                 style={{
                   textShadow: "0 1px 1px rgba(255,255,255,0.6)",
                 }}
@@ -123,7 +123,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({
                 className="font-amiri text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#ad873b] font-light leading-none self-start pt-1 sm:pt-2 select-none"
                 style={{
                   textShadow:
-                    "0 1px 1px rgba(255,255,255,0.7), 0 2px 4px rgba(173,135,59,0.15)",
+                    "0 1px 1px rgba(255,255,255,0.7)",
                 }}
                 aria-hidden="true"
               >
