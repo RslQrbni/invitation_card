@@ -3,14 +3,16 @@
 import React, { useState } from "react";
 import EnvelopeCard from "@/components/EnvelopeCard";
 import SacredGardenInvitation from "@/components/SacredGardenInvitation";
+import PageLoader from "@/components/PageLoader";
+import MusicPlayer from "@/components/MusicPlayer";
+// import FloatingButterflies from "@/components/FloatingButterflies";
 
 export default function Home() {
-  const [isAudioAutoPlay, setIsAudioAutoPlay] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
 
   const handleOpen = () => {
-    // User interacted with the document: initiate music playback immediately
-    setIsAudioAutoPlay(true);
+    setIsEnvelopeOpen(true);
   };
 
   const handleFullScreen = () => {
@@ -19,14 +21,19 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen bg-[#F9F0E0]">
+      {/* PAGE PRELOADER */}
+      <PageLoader />
+
+      {/* TWO FLOATING 3D BUTTERFLIES */}
+      {/* <FloatingButterflies /> */}
+
+
       {/* ENVELOPE WITH EMBEDDED INVITATION PAGE */}
       <EnvelopeCard
         onOpen={handleOpen}
         onFullScreen={handleFullScreen}
       >
-        <SacredGardenInvitation
-          isAudioAutoPlay={isAudioAutoPlay}
-        />
+        <SacredGardenInvitation />
       </EnvelopeCard>
 
       {/* Re-open Envelope Floating Button */}
@@ -34,9 +41,8 @@ export default function Home() {
         <button
           onClick={() => {
             setIsFullScreen(false);
-            setIsAudioAutoPlay(false);
+            setIsEnvelopeOpen(false);
             window.scrollTo({ top: 0, behavior: "instant" });
-            // Force full page reload to reset envelope state
             window.location.reload();
           }}
           aria-label="Replay envelope opening"
@@ -46,6 +52,9 @@ export default function Home() {
           <span className="hidden sm:inline">Envelope</span>
         </button>
       )}
+
+      {/* Floating Background Music Player — shown only when the envelope is opened */}
+      {isFullScreen && <MusicPlayer />}
     </main>
   );
 }

@@ -26,7 +26,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
               "0 1px 1px rgba(255,255,255,0.85), 0 2px 4px rgba(181,142,62,0.18)",
           }}
         >
-          Location
+          مکان
         </h2>
 
         {/* Ornamental Gold Flourish Divider */}
@@ -66,7 +66,7 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
 
         {/* Hotel Name in Cormorant Garamond */}
         <h3 className="font-cormorant text-2xl sm:text-3xl text-[#5a4636] font-normal tracking-wide mt-1">
-          Gotkemal Hotel
+          تالار گوت که مال
         </h3>
 
         {/* Persian Address in Amiri with dir="rtl" */}

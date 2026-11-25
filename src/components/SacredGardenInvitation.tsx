@@ -1,26 +1,17 @@
 "use client";
 
 import React from "react";
-import AudioPlayer from "./AudioPlayer";
 import CountdownTimer from "./CountdownTimer";
 import ScheduleOfEvents from "./ScheduleOfEvents";
 import LocationSection from "./LocationSection";
 import RsvpSection from "./RsvpSection";
 import BrideGroomSection from "./BrideGroomSection";
 
-export interface SacredGardenInvitationProps {
-  isAudioAutoPlay?: boolean;
-}
+export interface SacredGardenInvitationProps {}
 
-export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
-  isAudioAutoPlay = false,
-}) => {
+export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () => {
   return (
-    <div className="relative min-h-screen min-h-[100dvh] w-full bg-[#f4ecd8] text-[#3b2d22] flex flex-col items-center justify-start p-0 sm:py-10 sm:px-6 overflow-x-hidden selection:bg-[#cda95a]/30">
-      {/* Floating Background Soundtrack 
-      the music */}
-      {/* <AudioPlayer src="/sacred-garden/music.mp3" autoPlay={isAudioAutoPlay} /> */}
-
+    <div className="relative min-h-screen min-h-[100dvh] w-full bg-[#f4ecd8] text-[#3b2d22] flex flex-col items-center justify-start p-0 sm:pt-0 sm:px-6 overflow-x-hidden selection:bg-[#cda95a]/30">
       {/* Keyframe animations for corner flower heartbeat motion */}
       <style>{`
         @keyframes flowerMotionLeft {
@@ -65,7 +56,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
       {/* ========================================================
           THE INVITATION CARD (Responsive for Mobile & Desktop)
           ======================================================== */}
-      <div className="relative w-full max-w-[95%] sm:max-w-[520px] md:max-w-[560px] mx-auto flex flex-col items-center px-2 sm:px-4 md:px-0">
+      <div className="relative w-full max-w-[99%] sm:max-w-[520px] md:max-w-[560px] mx-auto flex flex-col items-center px-0 sm:px-4 md:px-0">
         {/* 1. TOP VIDEO CONTAINER WITH CORNER FLOWERS OVERLAY */}
         <div className="relative w-full overflow-visible">
           {/* LEFT CORNER FLOWER */}
@@ -106,7 +97,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
                 dir="rtl"
               >
                 {/* 1. TOP RIGHT: صلصال */}
-                <div className="text-right pr-2 sm:pr-4">
+                <div className="text-center">
                   <span
                     className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
                     style={{
@@ -132,7 +123,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
                 </div>
 
                 {/* 3. BOTTOM LEFT (FORWARD): شهمامه */}
-                <div className="text-left pl-2 sm:pl-4">
+                <div className="text-center">
                   <span
                     className="text-4xl sm:text-5xl md:text-6xl text-[#fff8ec] font-normal leading-loose inline-block"
                     style={{
@@ -168,47 +159,60 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = ({
             بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
           </div>
 
-          {/* THREE LINES OF GOLD CURSIVE SCRIPT */}
-          <div className="space-y-2 sm:space-y-3 md:space-y-4 my-3 sm:my-5 md:my-7">
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-pinyon text-[#ad873b] leading-[1.3] md:leading-[1.4] select-none"
+          {/* PERSIAN POETIC COUPLET IN NASTALIQ CALLIGRAPHY */}
+          <div
+            className="space-y-1.5 sm:space-y-3 my-3 sm:my-5 md:my-6 select-none"
+            dir="rtl"
+            style={{
+              fontFamily: "var(--font-nastaliq), 'IranNastaliq', 'Noto Nastaliq Urdu', var(--font-amiri), serif",
+            }}
+          >
+            <h3
+              className="text-[15px] sm:text-[19px] md:text-[23px] text-[#ad873b] leading-[2.2] sm:leading-[2.4] font-normal whitespace-nowrap"
               style={{
-                textShadow: "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(173,135,59,0.2)",
+                textShadow:
+                  "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(173,135,59,0.25)",
               }}
             >
-              Two Souls
-            </h2>
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-pinyon text-[#ad873b] leading-[1.3] md:leading-[1.4] select-none"
+              همه عمر بر ندارم سر ازین خمار مستی
+            </h3>
+            <h3
+              className="text-[15px] sm:text-[19px] md:text-[23px] text-[#ad873b] leading-[2.2] sm:leading-[2.4] font-normal whitespace-nowrap"
               style={{
-                textShadow: "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(173,135,59,0.2)",
+                textShadow:
+                  "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(173,135,59,0.25)",
               }}
             >
-              One destiny
-            </h2>
-            <h2
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-pinyon text-[#ad873b] leading-[1.3] md:leading-[1.4] select-none"
-              style={{
-                textShadow: "0 1px 2px rgba(255,255,255,0.85), 0 2px 6px rgba(173,135,59,0.2)",
-              }}
-            >
-              A Lifetime written by Allah
-            </h2>
+              که هنوز من نبودم که تو در دلم نشستی
+            </h3>
           </div>
 
-          {/* ELEGANT SERIF INVITATION MESSAGE */}
-          <div className="mt-6 sm:mt-8 md:mt-12 space-y-2 md:space-y-3.5 text-[#5e4b3c] font-serif text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed md:leading-loose font-normal max-w-sm sm:max-w-md md:max-w-lg mx-auto">
-            <p>Dear Friends and Family</p>
-            <p>Join us for an evening of love,</p>
-            <p>laughter, duas, and unforgettable</p>
-            <p>memories as we begin our forever.</p>
+          {/* DECORATIVE GOLD DIVIDER */}
+          <div className="flex items-center justify-center gap-2 my-4 sm:my-5 select-none opacity-75">
+            <span className="w-8 sm:w-12 h-[1px] bg-gradient-to-r from-transparent to-[#c5a054]" />
+            <span className="text-[#b58e3e] text-xs">✦</span>
+            <span className="w-8 sm:w-12 h-[1px] bg-gradient-to-l from-transparent to-[#c5a054]" />
+          </div>
+
+          {/* PERSIAN INVITATION MESSAGE */}
+          <div
+            className="mt-4 sm:mt-6 md:mt-8 space-y-2 md:space-y-2.5 font-amiri text-[#5e4b3c] text-base sm:text-lg md:text-xl leading-loose font-medium max-w-sm sm:max-w-md md:max-w-lg mx-auto select-none"
+            dir="rtl"
+            style={{
+              textShadow: "0 1px 1px rgba(255,255,255,0.85)",
+            }}
+          >
+            <p>در شبی که عشق،</p>
+            <p>بهانه‌ی کنار هم بودنمان شده،</p>
+            <p>خوشحالیم که شادی این آغاز را</p>
+            <p>با حضور پر مهرتان قسمت کنیم.</p>
           </div>
         </div>
 
         {/* 3. CEREMONY COUNTDOWN TIMER (Matches reference photo) */}
         <div className="relative z-20 w-full mt-4 sm:mt-6 md:mt-8 mb-8 sm:mb-12">
           <CountdownTimer
-            title="The ceremony begin in"
+            title="شروع جشن در"
             targetDate="2026-12-08T18:00:00"
             showBackground={false}
           />

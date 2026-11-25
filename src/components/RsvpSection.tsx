@@ -110,10 +110,18 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
   return (
     <section
       aria-label="اعلام حضور در جشن"
-      className={`relative z-20 w-full max-w-[500px] mx-auto px-4 ${className}`}
+      className={`relative z-20 w-full mx-auto ${className}`}
       dir="rtl"
     >
-      <div className="relative w-full rounded-3xl bg-[#fdfaf3]/95 backdrop-blur-sm border-2 border-[#c5a054]/40 shadow-[0_16px_36px_rgba(70,50,30,0.14)] p-6 sm:p-8 text-right">
+      <div
+        className="relative z-20 w-full px-6 sm:px-10 md:px-14 pt-10 sm:pt-16 md:pt-20 pb-14 sm:pb-20 md:pb-24 text-right drop-shadow-[0_12px_28px_rgba(60,40,20,0.14)]"
+        style={{
+          backgroundImage: "url('/paper_back.webp')",
+          backgroundSize: "100% 100%",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+        }}
+      >
         {/* ========================================================
             HEADER (Persian)
             ======================================================== */}
@@ -182,8 +190,8 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
                   onClick={() => setAttending("Yes")}
                   className={`relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 transition-all duration-200 cursor-pointer select-none ${
                     attending === "Yes"
-                      ? "bg-gradient-to-b from-[#fbf4e5] to-[#f4ecd8] border-[#b58e3e] shadow-[0_4px_14px_rgba(181,142,62,0.25)] text-[#3b2d22]"
-                      : "bg-white/80 border-[#c5a054]/30 hover:bg-[#faf4e8] text-[#6b5847] hover:border-[#c5a054]/60"
+                      ? "bg-[#cda95a]/25 border-[#b58e3e] shadow-[0_2px_8px_rgba(181,142,62,0.18)] text-[#3b2d22]"
+                      : "bg-white/25 border-[#c5a054]/45 hover:bg-white/40 text-[#6b5847] hover:border-[#c5a054]/60"
                   } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >
                   <span
@@ -209,8 +217,8 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
                   onClick={() => setAttending("No")}
                   className={`relative flex items-center justify-center gap-2.5 p-3.5 rounded-2xl border-2 transition-all duration-200 cursor-pointer select-none ${
                     attending === "No"
-                      ? "bg-gradient-to-b from-[#f9ecee] to-[#f4e1e4] border-[#8a2538] shadow-[0_4px_14px_rgba(138,37,56,0.18)] text-[#3b2d22]"
-                      : "bg-white/80 border-[#c5a054]/30 hover:bg-[#faf4e8] text-[#6b5847] hover:border-[#c5a054]/60"
+                      ? "bg-[#8a2538]/15 border-[#8a2538] shadow-[0_2px_8px_rgba(138,37,56,0.15)] text-[#3b2d22]"
+                      : "bg-white/25 border-[#c5a054]/45 hover:bg-white/40 text-[#6b5847] hover:border-[#c5a054]/60"
                   } disabled:opacity-60 disabled:cursor-not-allowed`}
                 >
                   <span
@@ -386,7 +394,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ className = "" }) => {
             </div>
 
             {/* Response Summary Card */}
-            <div className="p-4 rounded-2xl bg-white/90 border border-[#c5a054]/40 text-sm font-amiri space-y-2 text-right shadow-sm">
+            <div className="p-4 rounded-2xl bg-white/40 border border-[#c5a054]/40 text-sm font-amiri space-y-2 text-right shadow-sm">
               <div className="flex items-center justify-between border-b border-[#c5a054]/20 pb-2">
                 <span className="text-[#7c6652]">وضعیت حضور:</span>
                 <span className="font-bold text-[#8a6825]">
