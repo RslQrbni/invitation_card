@@ -5,7 +5,7 @@ import EnvelopeCard from "@/components/EnvelopeCard";
 import SacredGardenInvitation from "@/components/SacredGardenInvitation";
 import PageLoader from "@/components/PageLoader";
 import MusicPlayer from "@/components/MusicPlayer";
-// import FloatingButterflies from "@/components/FloatingButterflies";
+import FloatingButterflies from "@/components/FloatingButterflies";
 
 export default function Home() {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -24,8 +24,8 @@ export default function Home() {
       {/* PAGE PRELOADER */}
       <PageLoader />
 
-      {/* TWO FLOATING 3D BUTTERFLIES */}
-      {/* <FloatingButterflies /> */}
+      {/* TWO FLOATING 3D BUTTERFLIES — appear once the envelope is completely opened and fly freely unaffected by scroll */}
+      <FloatingButterflies active={isFullScreen} />
 
 
       {/* ENVELOPE WITH EMBEDDED INVITATION PAGE */}
