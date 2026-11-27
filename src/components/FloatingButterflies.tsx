@@ -140,8 +140,8 @@ const SHADOW_FRAGMENT_SHADER = /* glsl */ `
 // Two harmonious butterflies matching the warm cream-gold & Persian jewel palette
 const BUTTERFLY_CONFIGS: ButterflyConfig[] = [
   {
-    // Royal turquoise & velvet-black swallowtail
-    textureUrl: "/butterfly_1.png",
+    // Coral-red, black & emerald swallowtail
+    textureUrl: "/butterfly_3.png",
     baseScale: 1.0,
     cruiseSpeed: 1.65,
     baseFlapFreq: 10.2,
@@ -153,8 +153,8 @@ const BUTTERFLY_CONFIGS: ButterflyConfig[] = [
     tint: [1.0, 1.0, 1.0],
   },
   {
-    // Warm ivory-gold & soft coral-tip garden butterfly
-    textureUrl: "/butterfly_2.png",
+    // Warm crimson-orange & black spotted butterfly
+    textureUrl: "/butterfly_0.png",
     baseScale: 0.9,
     cruiseSpeed: 1.5,
     baseFlapFreq: 11.4,

@@ -31,37 +31,23 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
 
         {/* Ornamental Gold Flourish Divider */}
         <div className="w-full flex justify-center items-center my-2 sm:my-3">
-          <svg
-            viewBox="0 0 240 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-40 sm:w-52 h-auto text-[#b58e3e] drop-shadow-sm opacity-90 pointer-events-none select-none"
+          <div
+            className="relative w-56 sm:w-64 md:w-72 max-w-[85%] aspect-[888/124] overflow-hidden pointer-events-none select-none"
             aria-hidden="true"
           >
-            {/* Symmetrical flourish lines and center palmette petals */}
-            <path
-              d="M10 16h60c12 0 22-8 30-10 8 4 14 10 20 10s12-6 20-10c8 2 18 10 30 10h60"
-              stroke="#b58e3e"
-              strokeWidth="1.25"
-              strokeLinecap="round"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/design-elem-center.png"
+              alt=""
+              draggable={false}
+              className="absolute max-w-none h-auto block drop-shadow-sm opacity-95"
+              style={{
+                width: "115.65%",
+                left: "-6.42%",
+                top: "-74.19%",
+              }}
             />
-            {/* Center triple petal flourish */}
-            <path
-              d="M120 6c-2 4-3 7-3 10 2 0 4-1 6-4 2 3 4 4 6 4 0-3-1-6-3-10-1.5-2.5-4.5-2.5-6 0z"
-              fill="#b58e3e"
-            />
-            <path
-              d="M108 9c1 3 3 5 5 7-1 1-3 1-5 0-2-2-2-5 0-7z"
-              fill="#b58e3e"
-            />
-            <path
-              d="M132 9c-1 3-3 5-5 7 1 1 3 1 5 0 2-2 2-5 0-7z"
-              fill="#b58e3e"
-            />
-            {/* Elegant scroll curls at ends */}
-            <circle cx="20" cy="16" r="2" fill="#b58e3e" />
-            <circle cx="220" cy="16" r="2" fill="#b58e3e" />
-          </svg>
+          </div>
         </div>
 
         {/* Hotel Name in Cormorant Garamond */}
@@ -79,15 +65,46 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
       </div>
 
       {/* ========================================================
-          2. VENUE PHOTO
+          2. VENUE PHOTO (Matching Ornate Gold Frame & Crests)
           ======================================================== */}
-      <div className="max-w-[540px] w-full rounded-md shadow-[0_10px_28px_rgba(70,50,30,0.12)] overflow-hidden mt-6 sm:mt-8 mx-auto border border-[#c5a054]/25 bg-[#efe6d3]/30">
+      <div className="relative max-w-[440px] w-full aspect-square rounded-2xl border-2 border-[#c5a054] shadow-[0_12px_32px_rgba(70,50,30,0.14)] bg-[#eae3d2] mt-12 sm:mt-16 mx-auto">
+        {/* Top Ornate Crest */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/talar_photo.webp"
-          alt="Gotkemal Hotel Semnan"
-          className="w-full h-auto object-cover block"
-          loading="lazy"
+          src="/design-elem-top.png"
+          alt=""
+          className="absolute -top-[28px] sm:-top-[49px] left-1/2 -translate-x-1/2 w-[240px] sm:w-[300px] max-w-[88%] h-auto z-20 pointer-events-none select-none"
+          style={{
+            filter:
+              "sepia(0.32) saturate(1.45) brightness(1.06) drop-shadow(0 1px 2px rgba(70,50,30,0.18))",
+          }}
+          aria-hidden="true"
+          draggable={false}
+        />
+
+        {/* Venue Photo Container */}
+        <div className="w-full h-full rounded-[14px] overflow-hidden relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/talar_photo.webp"
+            alt="Gotkemal Hotel Semnan"
+            className="w-full h-full object-cover block"
+            loading="lazy"
+            draggable={false}
+          />
+        </div>
+
+        {/* Bottom Ornate Crest */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/design-elem-button.png"
+          alt=""
+          className="absolute -bottom-[28px] sm:-bottom-[49px] left-1/2 -translate-x-1/2 w-[240px] sm:w-[300px] max-w-[88%] h-auto z-20 pointer-events-none select-none"
+          style={{
+            filter:
+              "sepia(0.32) saturate(1.45) brightness(1.06) drop-shadow(0 1px 2px rgba(70,50,30,0.18))",
+          }}
+          aria-hidden="true"
           draggable={false}
         />
       </div>
@@ -95,13 +112,17 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
       {/* ========================================================
           3. ORNATE MAP CARD (Google Maps + Iranian Navigation)
           ======================================================== */}
-      <div className="relative max-w-[440px] w-full aspect-square rounded-2xl border-2 border-[#c5a054] shadow-[0_12px_32px_rgba(70,50,30,0.14)] bg-[#eae3d2] mt-10 sm:mt-14 mx-auto">
+      <div className="relative max-w-[440px] w-full aspect-square rounded-2xl border-2 border-[#c5a054] shadow-[0_12px_32px_rgba(70,50,30,0.14)] bg-[#eae3d2] mt-20 sm:mt-24 mx-auto">
         {/* Top Ornate Crest overlapping top border */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/sacred-garden/noroot(11).png.webp"
+          src="/design-elem-top.png"
           alt=""
-          className="absolute -top-[16px] sm:-top-[22px] left-1/2 -translate-x-1/2 w-[220px] sm:w-[280px] max-w-[85%] h-auto z-20 pointer-events-none drop-shadow-sm select-none"
+          className="absolute -top-[28px] sm:-top-[49px] left-1/2 -translate-x-1/2 w-[240px] sm:w-[300px] max-w-[88%] h-auto z-20 pointer-events-none select-none"
+          style={{
+            filter:
+              "sepia(0.32) saturate(1.45) brightness(1.06) drop-shadow(0 1px 2px rgba(70,50,30,0.18))",
+          }}
           aria-hidden="true"
           draggable={false}
         />
@@ -121,9 +142,13 @@ export const LocationSection: React.FC<LocationSectionProps> = ({
         {/* Bottom Ornate Crest overlapping bottom border */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/sacred-garden/noroot(12).png.webp"
+          src="/design-elem-button.png"
           alt=""
-          className="absolute -bottom-[16px] sm:-bottom-[22px] left-1/2 -translate-x-1/2 w-[220px] sm:w-[280px] max-w-[85%] h-auto z-20 pointer-events-none drop-shadow-sm select-none"
+          className="absolute -bottom-[28px] sm:-bottom-[49px] left-1/2 -translate-x-1/2 w-[240px] sm:w-[300px] max-w-[88%] h-auto z-20 pointer-events-none select-none"
+          style={{
+            filter:
+              "sepia(0.32) saturate(1.45) brightness(1.06) drop-shadow(0 1px 2px rgba(70,50,30,0.18))",
+          }}
           aria-hidden="true"
           draggable={false}
         />

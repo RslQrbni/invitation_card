@@ -4,10 +4,13 @@ import React from "react";
 import CountdownTimer from "./CountdownTimer";
 import ScheduleOfEvents from "./ScheduleOfEvents";
 import LocationSection from "./LocationSection";
+// import DressCodeSection from "./DressCodeSection";
 import RsvpSection from "./RsvpSection";
+import PhotoUploadSection from "./PhotoUploadSection";
+import WeddingGalleryInvite from "./WeddingGalleryInvite";
 import BrideGroomSection from "./BrideGroomSection";
 
-export interface SacredGardenInvitationProps {}
+export interface SacredGardenInvitationProps { }
 
 export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () => {
   return (
@@ -87,8 +90,28 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
               className="w-full h-full object-cover block"
             />
 
+            {/* ARCH CALLIGRAPHY: به نام عشق (straight centered text beneath the shrine arch above the names) */}
+            <div
+              className="absolute top-[13.5%] sm:top-[14.5%] md:top-[15.5%] inset-x-0 flex items-center justify-center z-20 pointer-events-none select-none px-6"
+              style={{
+                fontFamily:
+                  "var(--font-nastaliq), 'IranNastaliq', 'Noto Nastaliq Urdu', serif",
+              }}
+              dir="rtl"
+            >
+              <span
+                className="text-2xl sm:text-3xl md:text-4xl text-[#fdf4e1] font-normal leading-loose inline-block whitespace-nowrap"
+                style={{
+                  textShadow:
+                    "0 2px 7px rgba(0,0,0,0.9), 0 4px 16px rgba(0,0,0,0.75), 0 0 22px rgba(212,175,98,0.5)",
+                }}
+              >
+                به نام عشق
+              </span>
+            </div>
+
             {/* TEXT ON TOP OF THE VIDEO: صلصال و شهمامه (CASCADING NASTALIQ CALLIGRAPHY) */}
-            <div className="absolute top-[20%] sm:top-[22%] md:top-[25%] inset-x-0 flex flex-col items-center justify-center z-20 pointer-events-none select-none px-6">
+            <div className="absolute top-[23%] sm:top-[24%] md:top-[26%] inset-x-0 flex flex-col items-center justify-center z-20 pointer-events-none select-none px-6">
               <div
                 className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] flex flex-col font-nastaliq"
                 style={{
@@ -150,13 +173,20 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
           }}
         >
           {/* BISMILLAH IN GOLD ARABIC CALLIGRAPHY */}
-          <div
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-[#a88438] font-amiri tracking-wide leading-relaxed pt-2 pb-3 md:pb-5 select-none"
-            style={{
-              textShadow: "0 1px 1px rgba(255,255,255,0.8), 0 2px 4px rgba(168,132,56,0.15)",
-            }}
-          >
-            بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+          <div className="w-[78%] sm:w-[72%] md:w-[68%] max-w-[320px] mx-auto pt-1 pb-2 md:pb-4 select-none">
+            <div className="w-full aspect-[10/3.2] overflow-hidden flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/bismellah.png"
+                alt="بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"
+                draggable={false}
+                className="w-full h-auto max-w-none block pointer-events-none"
+                style={{
+                  filter:
+                    "saturate(0.58) sepia(0.18) brightness(0.76) contrast(1.06) drop-shadow(0 1px 1px rgba(255,255,255,0.8)) drop-shadow(0 2px 4px rgba(168,132,56,0.18))",
+                }}
+              />
+            </div>
           </div>
 
           {/* PERSIAN POETIC COUPLET IN NASTALIQ CALLIGRAPHY */}
@@ -224,7 +254,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
         {/* 5. LOCATION & VENUE NAVIGATION SECTION */}
         <LocationSection className="mb-14 sm:mb-20" />
 
-        {/* 6. PARCHMENT PAPER SECTION (Dress Code & Gift Preference) */}
+        {/* 6. PARCHMENT PAPER SECTION (Dress Code & Gift Preference — commented out for now, remove outer comment wrapper to restore)
         <div
           className="relative z-20 w-full min-h-[360px] sm:min-h-[430px] px-8 sm:px-14 md:px-16 py-12 sm:py-16 md:py-20 text-center drop-shadow-[0_12px_28px_rgba(60,40,20,0.14)] mb-16 sm:mb-24 flex flex-col items-center justify-center overflow-visible"
           style={{
@@ -234,8 +264,6 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
             backgroundPosition: "center",
           }}
         >
-          {/* TOP RIGHT CORNER FLOWER */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/flower_top_dress_code.webp"
             alt="Top Right Floral Arrangement"
@@ -247,7 +275,6 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
             draggable={false}
           />
 
-          {/* BOTTOM LEFT CORNER FLOWER (Flipped right-side up with scale-y-[-1]) */}
           <div
             className="flower-motion-left absolute -bottom-3 sm:-bottom-4 md:-bottom-5 -left-10 sm:-left-11 md:-left-12 w-[36%] sm:w-[38%] md:w-[40%] max-w-[175px] sm:max-w-[210px] md:max-w-[235px] z-30 pointer-events-none drop-shadow-[0_4px_14px_rgba(70,50,30,0.15)]"
             style={{
@@ -255,7 +282,6 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
               backfaceVisibility: "hidden",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/flower_button_dress_code.webp"
               alt="Bottom Left Floral Arrangement"
@@ -264,9 +290,7 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
             />
           </div>
 
-          {/* DRESS CODE & GIFT PREFERENCE CONTENT */}
           <div className="relative z-20 max-w-[320px] sm:max-w-[380px] mx-auto space-y-8 sm:space-y-10">
-            {/* Dress Code */}
             <div className="space-y-3 sm:space-y-4">
               <h2
                 className="text-4xl sm:text-5xl font-pinyon text-[#b58e3e] leading-tight select-none"
@@ -283,7 +307,6 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
               </p>
             </div>
 
-            {/* Gift Preference */}
             <div className="space-y-3 sm:space-y-4">
               <h2
                 className="text-4xl sm:text-5xl font-pinyon text-[#b58e3e] leading-tight select-none"
@@ -300,15 +323,26 @@ export const SacredGardenInvitation: React.FC<SacredGardenInvitationProps> = () 
             </div>
           </div>
         </div>
+        */}
 
         {/* 7. RSVP ATTENDANCE FORM SECTION */}
         <RsvpSection className="mb-16 sm:mb-24" />
 
-        {/* 8. BRIDE & GROOM PORTRAIT SECTION */}
+        {/* 8. SHARE YOUR PHOTOS & VIDEOS UPLOAD SECTION */}
+        <PhotoUploadSection className="mb-16 sm:mb-24" />
+
+        {/* 9. PUBLIC WEDDING ALBUM CTA (guides guests to /gallery) */}
+        <WeddingGalleryInvite className="mb-16 sm:mb-24" />
+
+        {/* 10. BRIDE & GROOM PORTRAIT SECTION */}
         <BrideGroomSection className="mb-8 sm:mb-14" />
+
       </div>
+
     </div>
+
   );
+
 };
 
 export default SacredGardenInvitation;
